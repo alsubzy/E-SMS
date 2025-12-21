@@ -85,10 +85,10 @@ const menuItems = [
     label: 'Dashboard',
     icon: LayoutGrid,
     submenu: [
-      { href: '#', label: 'Overview', icon: BarChart2 },
-      { href: '#', label: 'Analytics', icon: AreaChart },
-      { href: '#', label: 'Notifications', icon: Bell },
-      { href: '#', label: 'Quick Actions', icon: PlusSquare },
+      { href: '/', label: 'Overview', icon: BarChart2 },
+      { href: '/#', label: 'Analytics', icon: AreaChart },
+      { href: '/#', label: 'Notifications', icon: Bell },
+      { href: '/#', label: 'Quick Actions', icon: PlusSquare },
     ],
   },
   {
@@ -97,10 +97,10 @@ const menuItems = [
     icon: Users,
     submenu: [
       { href: '/users', label: 'Users', icon: Users2 },
-      { href: '#', label: 'Roles & Permissions', icon: Key },
-      { href: '#', label: 'Staff Management', icon: Briefcase },
-      { href: '#', label: 'Parents', icon: User },
-      { href: '#', label: 'User Activity Logs', icon: History },
+      { href: '/#', label: 'Roles & Permissions', icon: Key },
+      { href: '/#', label: 'Staff Management', icon: Briefcase },
+      { href: '/#', label: 'Parents', icon: User },
+      { href: '/#', label: 'User Activity Logs', icon: History },
     ],
   },
   {
@@ -108,12 +108,12 @@ const menuItems = [
     label: 'Academic Management',
     icon: GraduationCap,
     submenu: [
-      { href: '#', label: 'Classes / Grades', icon: BookCopy },
-      { href: '#', label: 'Sections', icon: Users2 },
-      { href: '#', label: 'Subjects', icon: BookMarked },
-      { href: '#', label: 'Academic Calendar', icon: Calendar },
-      { href: '#', label: 'Class Timetable', icon: ClipboardList },
-      { href: '#', label: 'Syllabus Management', icon: BookText },
+      { href: '/academics', label: 'Classes / Grades', icon: BookCopy },
+      { href: '/#', label: 'Sections', icon: Users2 },
+      { href: '/#', label: 'Subjects', icon: BookMarked },
+      { href: '/#', label: 'Academic Calendar', icon: Calendar },
+      { href: '/#', label: 'Class Timetable', icon: ClipboardList },
+      { href: '/#', label: 'Syllabus Management', icon: BookText },
     ],
   },
   {
@@ -122,10 +122,10 @@ const menuItems = [
     icon: Briefcase,
     submenu: [
       { href: '/teachers', label: 'Teachers', icon: Users2 },
-      { href: '#', label: 'Teacher Assignment', icon: UserCheck },
-      { href: '#', label: 'Teaching Schedule', icon: ClipboardList },
-      { href: '#', label: 'Teacher Attendance', icon: CalendarCheck },
-      { href: '#', label: 'Performance Evaluation', icon: Percent },
+      { href: '/#', label: 'Teacher Assignment', icon: UserCheck },
+      { href: '/#', label: 'Teaching Schedule', icon: ClipboardList },
+      { href: '/#', label: 'Teacher Attendance', icon: CalendarCheck },
+      { href: '/#', label: 'Performance Evaluation', icon: Percent },
     ],
   },
   {
@@ -134,11 +134,11 @@ const menuItems = [
     icon: Users,
     submenu: [
       { href: '/students', label: 'Students', icon: Users2 },
-      { href: '#', label: 'Student Admission', icon: UserPlus },
-      { href: '#', label: 'Student Promotion', icon: TrendingUp },
-      { href: '#', label: 'Student Attendance', icon: CalendarCheck },
-      { href: '#', label: 'Student Profiles', icon: UserCircle },
-      { href: '#', label: 'Discipline Records', icon: UserX },
+      { href: '/#', label: 'Student Admission', icon: UserPlus },
+      { href: '/#', label: 'Student Promotion', icon: TrendingUp },
+      { href: '/#', label: 'Student Attendance', icon: CalendarCheck },
+      { href: '/#', label: 'Student Profiles', icon: UserCircle },
+      { href: '/#', label: 'Discipline Records', icon: UserX },
     ],
   },
   {
@@ -147,11 +147,11 @@ const menuItems = [
     icon: BookOpen,
     submenu: [
       { href: '/lms', label: 'Courses', icon: BookCopy },
-      { href: '#', label: 'Lessons', icon: BookMarked },
-      { href: '#', label: 'Assignments', icon: FileText },
-      { href: '#', label: 'Exams / Quizzes', icon: FileQuestion },
-      { href: '#', label: 'Results & Grades', icon: Award },
-      { href: '#', label: 'Certificates', icon: BadgeCheck },
+      { href: '/#', label: 'Lessons', icon: BookMarked },
+      { href: '/#', label: 'Assignments', icon: FileText },
+      { href: '/#', label: 'Exams / Quizzes', icon: FileQuestion },
+      { href: '/#', label: 'Results & Grades', icon: Award },
+      { href: '/#', label: 'Certificates', icon: BadgeCheck },
     ],
   },
   {
@@ -160,11 +160,11 @@ const menuItems = [
     icon: FileText,
     submenu: [
       { href: '/examinations', label: 'Exam Setup', icon: Cog },
-      { href: '#', label: 'Exam Schedule', icon: Calendar },
-      { href: '#', label: 'Marks Entry', icon: Calculator },
-      { href: '#', label: 'Grading System', icon: Percent },
-      { href: '#', label: 'Report Cards', icon: BookText },
-      { href: '#', label: 'Transcripts', icon: FileText },
+      { href: '/#', label: 'Exam Schedule', icon: Calendar },
+      { href: '/#', label: 'Marks Entry', icon: Calculator },
+      { href: '/#', label: 'Grading System', icon: Percent },
+      { href: '/#', label: 'Report Cards', icon: BookText },
+      { href: '/#', label: 'Transcripts', icon: FileText },
     ],
   },
   {
@@ -173,9 +173,9 @@ const menuItems = [
     icon: CalendarCheck,
     submenu: [
       { href: '/attendance', label: 'Student Attendance', icon: UserCheck },
-      { href: '#', label: 'Teacher Attendance', icon: UserCheck },
-      { href: '#', label: 'Staff Attendance', icon: UserCheck },
-      { href: '#', label: 'Attendance Reports', icon: BarChart2 },
+      { href: '/#', label: 'Teacher Attendance', icon: UserCheck },
+      { href: '/#', label: 'Staff Attendance', icon: UserCheck },
+      { href: '/#', label: 'Attendance Reports', icon: BarChart2 },
     ],
   },
   {
@@ -184,11 +184,11 @@ const menuItems = [
     icon: Banknote,
     submenu: [
       { href: '/accounting', label: 'Fee Structure', icon: Landmark },
-      { href: '#', label: 'Fee Collection', icon: CreditCard },
-      { href: '#', label: 'Invoices', icon: Receipt },
-      { href: '#', label: 'Payments', icon: Wallet },
-      { href: '#', label: 'Scholarships', icon: Gift },
-      { href: '#', label: 'Financial Reports', icon: BarChart2 },
+      { href: '/#', label: 'Fee Collection', icon: CreditCard },
+      { href: '/#', label: 'Invoices', icon: Receipt },
+      { href: '/#', label: 'Payments', icon: Wallet },
+      { href: '/#', label: 'Scholarships', icon: Gift },
+      { href: '/#', label: 'Financial Reports', icon: BarChart2 },
     ],
   },
   {
@@ -197,10 +197,10 @@ const menuItems = [
     icon: Box,
     submenu: [
       { href: '/inventory', label: 'School Assets', icon: Landmark },
-      { href: '#', label: 'Asset Assignment', icon: UserCheck },
-      { href: '#', label: 'Inventory Stock', icon: Boxes },
-      { href: '#', label: 'Maintenance Records', icon: Wrench },
-      { href: '#', label: 'Depreciation', icon: TrendingDown },
+      { href: '/#', label: 'Asset Assignment', icon: UserCheck },
+      { href: '/#', label: 'Inventory Stock', icon: Boxes },
+      { href: '/#', label: 'Maintenance Records', icon: Wrench },
+      { href: '/#', label: 'Depreciation', icon: TrendingDown },
     ],
   },
   {
@@ -209,14 +209,14 @@ const menuItems = [
     icon: Bus,
     submenu: [
       { href: '/transport', label: 'Vehicles', icon: Truck },
-      { href: '#', label: 'Routes', icon: Map },
-      { href: '#', label: 'Drivers', icon: Car },
+      { href: '/#', label: 'Routes', icon: Map },
+      { href: '/#', label: 'Drivers', icon: Car },
       {
-        href: '#',
+        href: '/#',
         label: 'Student Transport Allocation',
         icon: UserCheck,
       },
-      { href: '#', label: 'Transport Fees', icon: Ticket },
+      { href: '/#', label: 'Transport Fees', icon: Ticket },
     ],
   },
   {
@@ -225,9 +225,9 @@ const menuItems = [
     icon: Bed,
     submenu: [
       { href: '/hostel', label: 'Hostel Rooms', icon: Bed },
-      { href: '#', label: 'Room Allocation', icon: UserCheck },
-      { href: '#', label: 'Hostel Attendance', icon: ClipboardCheck },
-      { href: '#', label: 'Hostel Fees', icon: Wallet },
+      { href: '/#', label: 'Room Allocation', icon: UserCheck },
+      { href: '/#', label: 'Hostel Attendance', icon: ClipboardCheck },
+      { href: '/#', label: 'Hostel Fees', icon: Wallet },
     ],
   },
   {
@@ -236,10 +236,10 @@ const menuItems = [
     icon: Megaphone,
     submenu: [
       { href: '/communication', label: 'Announcements', icon: Megaphone },
-      { href: '#', label: 'Notices', icon: FileText },
-      { href: '#', label: 'Email / SMS', icon: Mail },
-      { href: '#', label: 'Parent Messaging', icon: MessageSquare },
-      { href: '#', label: 'In-App Notifications', icon: Bell },
+      { href: '/#', label: 'Notices', icon: FileText },
+      { href: '/#', label: 'Email / SMS', icon: Mail },
+      { href: '/#', label: 'Parent Messaging', icon: MessageSquare },
+      { href: '/#', label: 'In-App Notifications', icon: Bell },
     ],
   },
   {
@@ -248,10 +248,10 @@ const menuItems = [
     icon: AreaChart,
     submenu: [
       { href: '/reports/summarize', label: 'Academic Reports', icon: BarChart2 },
-      { href: '#', label: 'Attendance Reports', icon: BarChart2 },
-      { href: '#', label: 'Financial Reports', icon: BarChart2 },
-      { href: '#', label: 'Teacher Performance', icon: BarChart2 },
-      { href: '#', label: 'Custom Reports', icon: FileCog },
+      { href: '/#', label: 'Attendance Reports', icon: BarChart2 },
+      { href: '/#', label: 'Financial Reports', icon: BarChart2 },
+      { href: '/#', label: 'Teacher Performance', icon: BarChart2 },
+      { href: '/#', label: 'Custom Reports', icon: FileCog },
     ],
   },
   {
@@ -260,10 +260,10 @@ const menuItems = [
     icon: Settings,
     submenu: [
       { href: '/settings', label: 'School Profile', icon: Landmark },
-      { href: '#', label: 'Academic Year', icon: Calendar },
-      { href: '#', label: 'Class & Grade Setup', icon: Cog },
-      { href: '#', label: 'System Preferences', icon: Cog },
-      { href: '#', label: 'Backup & Restore', icon: RefreshCcw },
+      { href: '/#', label: 'Academic Year', icon: Calendar },
+      { href: '/#', label: 'Class & Grade Setup', icon: Cog },
+      { href: '/#', label: 'System Preferences', icon: Cog },
+      { href: '/#', label: 'Backup & Restore', icon: RefreshCcw },
     ],
   },
   {
@@ -272,9 +272,9 @@ const menuItems = [
     icon: ShieldCheck,
     submenu: [
       { href: '/security', label: 'Login History', icon: History },
-      { href: '#', label: 'Audit Trail', icon: Activity },
-      { href: '#', label: 'Activity Logs', icon: FileClock },
-      { href: '#', label: 'Permissions Review', icon: Key },
+      { href: '/#', label: 'Audit Trail', icon: Activity },
+      { href: '/#', label: 'Activity Logs', icon: FileClock },
+      { href: '/#', label: 'Permissions Review', icon: Key },
     ],
   },
   {
@@ -283,9 +283,9 @@ const menuItems = [
     icon: Wrench,
     submenu: [
       { href: '/utilities', label: 'Import / Export', icon: Share2 },
-      { href: '#', label: 'Data Migration', icon: RefreshCcw },
-      { href: '#', label: 'API Access', icon: Share2 },
-      { href: '#', label: 'Webhooks', icon: Webhook },
+      { href: '/#', label: 'Data Migration', icon: RefreshCcw },
+      { href: '/#', label: 'API Access', icon: Share2 },
+      { href: '/#', label: 'Webhooks', icon: Webhook },
     ],
   },
   {
@@ -294,9 +294,9 @@ const menuItems = [
     icon: UserCircle,
     submenu: [
       { href: '/account', label: 'Profile', icon: UserCircle },
-      { href: '#', label: 'Change Password', icon: Lock },
-      { href: '#', label: 'Preferences', icon: Cog },
-      { href: '#', label: 'Logout', icon: LogOut },
+      { href: '/#', label: 'Change Password', icon: Lock },
+      { href: '/#', label: 'Preferences', icon: Cog },
+      { href: '/#', label: 'Logout', icon: LogOut },
     ],
   },
 ];
@@ -383,10 +383,10 @@ export default function Nav() {
                         isActive={pathname === subItem.href}
                       >
                         <Link href={subItem.href}>
-                          <div className="flex items-center gap-2">
-                            <subItem.icon className="h-4 w-4" />
-                            <span>{subItem.label}</span>
-                          </div>
+                            <div className="flex items-center gap-2">
+                                <subItem.icon className="h-4 w-4" />
+                                <span>{subItem.label}</span>
+                            </div>
                         </Link>
                       </SidebarMenuSubButton>
                     </SidebarMenuItem>
@@ -400,3 +400,5 @@ export default function Nav() {
     </>
   );
 }
+
+    
