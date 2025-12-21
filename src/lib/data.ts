@@ -1,4 +1,4 @@
-import type { StarStudent, RecentActivity, ExamResult } from '@/lib/types';
+import type { StarStudent, RecentActivity, ExamResult, Student } from '@/lib/types';
 import { placeholderImages } from './placeholder-images.json';
 import { User, Wallet, GraduationCap as NewCourseIcon } from 'lucide-react';
 
@@ -28,6 +28,42 @@ export const starStudents: StarStudent[] = [
     percent: 92,
     year: 2014,
   },
+];
+
+export const students: Student[] = [
+    {
+      id: 'STU-001',
+      name: 'John Doe',
+      class: '10',
+      section: 'A',
+      status: 'Active',
+      avatarUrl: placeholderImages.find(p => p.id === 'student-1')?.imageUrl ?? '',
+      email: 'john.doe@example.com',
+      dateOfBirth: '2008-05-12',
+      guardianName: 'Richard Doe',
+    },
+    {
+      id: 'STU-002',
+      name: 'Jane Smith',
+      class: '9',
+      section: 'B',
+      status: 'Active',
+      avatarUrl: placeholderImages.find(p => p.id === 'student-2')?.imageUrl ?? '',
+      email: 'jane.smith@example.com',
+      dateOfBirth: '2009-02-20',
+      guardianName: 'Sarah Smith',
+    },
+    {
+      id: 'STU-003',
+      name: 'Mike Johnson',
+      class: '11',
+      section: 'A',
+      status: 'Inactive',
+      avatarUrl: placeholderImages.find(p => p.id === 'student-3')?.imageUrl ?? '',
+      email: 'mike.johnson@example.com',
+      dateOfBirth: '2007-11-30',
+      guardianName: 'Peter Johnson',
+    },
 ];
 
 export const recentActivities: RecentActivity[] = [
