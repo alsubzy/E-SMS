@@ -1,6 +1,6 @@
 'use client';
 
-import { Bell, ChevronDown, Search, MessageCircle } from 'lucide-react';
+import { Bell, ChevronDown, Search, MessageCircle, User, Settings, Lock, BellRing, History, LogOut } from 'lucide-react';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -15,6 +15,7 @@ import { Button } from '@/components/ui/button';
 import { SidebarTrigger } from '@/components/ui/sidebar';
 import { useAuth } from '@/context/AuthContext';
 import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 
 export default function Header() {
   const { logout } = useAuth();
@@ -74,10 +75,29 @@ export default function Header() {
           <DropdownMenuContent align="end" className="w-56">
             <DropdownMenuLabel>My Account</DropdownMenuLabel>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>Profile</DropdownMenuItem>
-            <DropdownMenuItem>Settings</DropdownMenuItem>
+            <DropdownMenuItem asChild>
+              <Link href="/account"><User className="mr-2 h-4 w-4" />View Profile</Link>
+            </DropdownMenuItem>
+            <DropdownMenuItem asChild>
+              <Link href="/account"><Settings className="mr-2 h-4 w-4" />Edit Profile</Link>
+            </DropdownMenuItem>
+            <DropdownMenuItem>
+              <Lock className="mr-2 h-4 w-4" />
+              Change Password
+            </DropdownMenuItem>
+            <DropdownMenuItem>
+              <BellRing className="mr-2 h-4 w-4" />
+              Notification Preferences
+            </DropdownMenuItem>
+            <DropdownMenuItem>
+              <History className="mr-2 h-4 w-4" />
+              Activity History
+            </DropdownMenuItem>
             <DropdownMenuSeparator />
-            <DropdownMenuItem onClick={handleLogout}>Logout</DropdownMenuItem>
+            <DropdownMenuItem onClick={handleLogout}>
+              <LogOut className="mr-2 h-4 w-4" />
+              Logout
+            </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
       </div>
