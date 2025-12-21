@@ -17,6 +17,12 @@
       "description": "A male student writing in a notebook",
       "imageUrl": "https://i.pravatar.cc/150?u=a04258114e29026702d",
       "imageHint": "student person"
+    },
+    {
+      "id": "login-illustration",
+      "description": "3D characters for login page",
+      "imageUrl": "https://firebasestudio.b-cdn.net/asset/e8179f53-2949-43c3-9824-c10a3013d33f.png",
+      "imageHint": "3d characters"
     }
   ]
 }
