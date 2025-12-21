@@ -24,7 +24,6 @@ import {
 } from 'lucide-react';
 import { starStudents, recentActivities, examResultData } from '@/lib/data';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Checkbox } from '@/components/ui/checkbox';
 import BarChart from '@/components/barchart';
 import DonutChart from '@/components/donutchart';
 
@@ -92,7 +91,6 @@ export default function Dashboard() {
             <Table>
               <TableHeader>
                 <TableRow>
-                  <TableHead><Checkbox /></TableHead>
                   <TableHead>Name</TableHead>
                   <TableHead>ID</TableHead>
                   <TableHead>Marks</TableHead>
@@ -103,7 +101,6 @@ export default function Dashboard() {
               <TableBody>
                 {starStudents.map((student) => (
                   <TableRow key={student.id}>
-                    <TableCell><Checkbox checked={student.selected} /></TableCell>
                     <TableCell>
                       <div className="flex items-center gap-3">
                         <Avatar className="h-10 w-10">
@@ -135,7 +132,7 @@ export default function Dashboard() {
 
         <Card>
           <CardHeader className="flex flex-row justify-between items-center">
-            <CardTitle>All Exam Results</CardTitle>
+            <CardTitle>Recent Activity</CardTitle>
             <MoreHorizontal className="h-5 w-5 text-muted-foreground" />
           </CardHeader>
           <CardContent>
