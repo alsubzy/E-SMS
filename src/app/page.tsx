@@ -2,162 +2,64 @@
 import {
   Card,
   CardContent,
+  CardDescription,
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from '@/components/ui/table';
-import StatCard from '@/components/stat-card';
-import {
-  Users,
-  GraduationCap,
-  Wallet,
-  MoreHorizontal,
-  User,
-} from 'lucide-react';
-import { starStudents, recentActivities, examResultData } from '@/lib/data';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import BarChart from '@/components/barchart';
-import DonutChart from '@/components/donutchart';
-
-const statCards = [
-    { title: "Students", value: "15.00K", icon: <GraduationCap size={24} />, bgColor: "bg-purple-100", iconColor: "text-purple-600" },
-    { title: "Teachers", value: "2.00K", icon: <Users size={24} />, bgColor: "bg-blue-100", iconColor: "text-blue-600" },
-    { title: "Parents", value: "5.6K", icon: <User size={24} />, bgColor: "bg-orange-100", iconColor: "text-orange-600" },
-    { title: "Earnings", value: "$19.3K", icon: <Wallet size={24} />, bgColor: "bg-green-100", iconColor: "text-green-600" }
-]
 
 export default function Dashboard() {
   return (
-    <div className="flex flex-col gap-4 md:gap-8">
-    <h1 className="text-2xl font-bold">Admin Dashboard</h1>
-      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-        {statCards.map((card, index) => (
-             <StatCard 
-             key={index}
-             title={card.title}
-             value={card.value}
-             icon={card.icon}
-             bgColor={card.bgColor}
-             iconColor={card.iconColor}
-            />
-        ))}
-      </div>
-
-      <div className="grid grid-cols-1 gap-4 md:gap-8 lg:grid-cols-3">
-        <Card className="lg:col-span-2">
-          <CardHeader className="flex flex-col sm:flex-row justify-between items-start sm:items-center">
-            <CardTitle>All Exam Result</CardTitle>
-            <div className="flex items-center gap-4 mt-2 sm:mt-0">
-                <div className="flex items-center gap-2">
-                    <div className="w-3 h-3 rounded-full bg-purple-600" />
-                    <span className="text-sm">Teacher</span>
-                </div>
-                <div className="flex items-center gap-2">
-                    <div className="w-3 h-3 rounded-full bg-orange-400" />
-                    <span className="text-sm">Student</span>
-                </div>
-            </div>
-          </CardHeader>
-          <CardContent>
-            <BarChart data={examResultData} />
-          </CardContent>
-        </Card>
-
+    <div className="flex flex-col gap-4 md:gap-8 p-4 md:p-6">
+      <h1 className="text-2xl font-bold">Product overview</h1>
+      <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
         <Card>
           <CardHeader>
-            <CardTitle>Students</CardTitle>
+            <CardTitle>Overview</CardTitle>
           </CardHeader>
           <CardContent>
-            <DonutChart />
-          </CardContent>
-        </Card>
-      </div>
-
-      <div className="grid grid-cols-1 gap-4 md:gap-8 lg:grid-cols-3">
-        <Card className="lg:col-span-2">
-          <CardHeader className="flex flex-row justify-between items-center">
-            <CardTitle>Star Students</CardTitle>
-            <MoreHorizontal className="h-5 w-5 text-muted-foreground" />
-          </CardHeader>
-          <CardContent className="overflow-x-auto">
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead>Name</TableHead>
-                  <TableHead>ID</TableHead>
-                  <TableHead className="hidden sm:table-cell">Marks</TableHead>
-                  <TableHead className="hidden sm:table-cell">Percent</TableHead>
-                  <TableHead className="hidden md:table-cell">Year</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {starStudents.map((student) => (
-                  <TableRow key={student.id}>
-                    <TableCell>
-                      <div className="flex items-center gap-3">
-                        <Avatar className="h-10 w-10">
-                          <AvatarImage
-                            src={student.avatarUrl}
-                            alt={student.name}
-                            data-ai-hint="student person"
-                          />
-                          <AvatarFallback>
-                            {student.name
-                              .split(' ')
-                              .map((n) => n[0])
-                              .join('')}
-                          </AvatarFallback>
-                        </Avatar>
-                        <span className="font-medium">{student.name}</span>
-                      </div>
-                    </TableCell>
-                    <TableCell>{student.id}</TableCell>
-                    <TableCell className="hidden sm:table-cell">{student.marks}</TableCell>
-                    <TableCell className="hidden sm:table-cell">{student.percent}%</TableCell>
-                    <TableCell className="hidden md:table-cell">{student.year}</TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader className="flex flex-row justify-between items-center">
-            <CardTitle>Recent Activity</CardTitle>
-            <MoreHorizontal className="h-5 w-5 text-muted-foreground" />
-          </CardHeader>
-          <CardContent>
-            <div className="space-y-4">
-              {recentActivities.map((activity) => (
-                <div key={activity.id} className="flex items-start gap-4 p-2 rounded-lg" style={{backgroundColor: activity.bgColor}}>
-                  <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-md" style={{backgroundColor: activity.iconBgColor}}>
-                    <activity.icon className="h-5 w-5" style={{color: activity.iconColor}} />
-                  </div>
-                  <div className="flex-1 space-y-1">
-                    <p className="text-sm font-medium leading-none">
-                      {activity.title}
-                    </p>
-                    <p className="text-sm text-muted-foreground">
-                      {activity.description}
-                    </p>
-                  </div>
-                  <p className="text-xs text-muted-foreground sm:text-sm">
-                      {activity.timestamp}
-                  </p>
-                </div>
-              ))}
+            <div className="flex flex-col items-center gap-4">
+              <div className="flex h-24 w-24 items-center justify-center rounded-full bg-gray-100">
+                <PackageIcon className="h-12 w-12 text-gray-500" />
+              </div>
+              <div className="text-center">
+                <p className="text-sm text-gray-500">Earning</p>
+                <p className="text-4xl font-bold">$128k</p>
+                <p className="text-sm text-green-500">↑ 36.8% vs last year</p>
+              </div>
             </div>
+          </CardContent>
+        </Card>
+        <Card className="lg:col-span-2">
+          <CardHeader>
+            <CardTitle>Product activity</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <p>Activity feed will be shown here.</p>
           </CardContent>
         </Card>
       </div>
     </div>
+  );
+}
+
+function PackageIcon(props: React.SVGProps<SVGSVGElement>) {
+  return (
+    <svg
+      {...props}
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <path d="M16.5 9.4a4.5 4.5 0 1 1-9 0 4.5 4.5 0 0 1 9 0Z" />
+      <path d="M22 13.8a8.5 8.5 0 0 1-15 0" />
+      <path d="M22 13.8V20a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V13.8" />
+      <path d="M15 13.8a3 3 0 0 1-6 0" />
+    </svg>
   );
 }
