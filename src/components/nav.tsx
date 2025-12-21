@@ -379,7 +379,7 @@ export default function Nav() {
                         isActive={pathname === subItem.href}
                       >
                         <Link href={subItem.href}>
-                          <div>
+                           <div>
                             <subItem.icon className="h-4 w-4" />
                             <span>{subItem.label}</span>
                           </div>
