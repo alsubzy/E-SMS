@@ -18,12 +18,19 @@ import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 
 export default function Header() {
-  const { logout } = useAuth();
+  const { logout, userProfile } = useAuth();
   const router = useRouter();
 
   const handleLogout = () => {
     logout();
     router.push('/login');
+  };
+
+  const getInitials = (name: string) => {
+    return name
+      .split(' ')
+      .map((n) => n[0])
+      .join('');
   };
 
   return (
@@ -57,19 +64,23 @@ export default function Header() {
               variant="ghost"
               className="flex items-center gap-2 rounded-full p-1 h-auto"
             >
-              <Avatar className="h-8 w-8">
-                <AvatarImage
-                  src="https://picsum.photos/seed/avatar2/100/100"
-                  alt="Admin"
-                  data-ai-hint="person face"
-                />
-                <AvatarFallback>PL</AvatarFallback>
-              </Avatar>
-              <div className="hidden text-left md:flex flex-col">
-                <span className="text-sm font-medium">Priscilla Lily</span>
-                <span className="text-xs text-muted-foreground">Admin</span>
-              </div>
-              <ChevronDown className="hidden h-4 w-4 text-muted-foreground md:block" />
+              {userProfile && (
+                <>
+                  <Avatar className="h-8 w-8">
+                    <AvatarImage
+                      src={userProfile.avatarUrl}
+                      alt={userProfile.fullName}
+                      data-ai-hint="person face"
+                    />
+                    <AvatarFallback>{getInitials(userProfile.fullName)}</AvatarFallback>
+                  </Avatar>
+                  <div className="hidden text-left md:flex flex-col">
+                    <span className="text-sm font-medium">{userProfile.fullName}</span>
+                    <span className="text-xs text-muted-foreground">Admin</span>
+                  </div>
+                  <ChevronDown className="hidden h-4 w-4 text-muted-foreground md:block" />
+                </>
+              )}
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end" className="w-56">

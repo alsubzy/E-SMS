@@ -7,11 +7,9 @@ import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { User, Trash2, Save, X } from 'lucide-react';
+import { Trash2, Save, X } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
-
-const SAVED_PROFILE_KEY = 'admin_profile';
-const DRAFT_PROFILE_KEY = 'admin_profile_draft';
+import { useAuth } from '@/context/AuthContext';
 
 type AdminProfile = {
   fullName: string;
@@ -31,47 +29,40 @@ const defaultProfile: AdminProfile = {
   avatarUrl: 'https://picsum.photos/seed/avatar2/100/100',
 };
 
+const DRAFT_PROFILE_KEY = 'admin_profile_draft';
+
 export default function AccountPage() {
-  const [savedProfile, setSavedProfile] = useState<AdminProfile>(defaultProfile);
-  const [draftProfile, setDraftProfile] = useState<AdminProfile>(defaultProfile);
+  const { userProfile, updateProfile } = useAuth();
+  const [draftProfile, setDraftProfile] = useState<AdminProfile | null>(userProfile);
   const [isClient, setIsClient] = useState(false);
   const { toast } = useToast();
 
-  // Load data from localStorage on component mount
   useEffect(() => {
     setIsClient(true);
-    try {
-      const saved = localStorage.getItem(SAVED_PROFILE_KEY);
-      const draft = localStorage.getItem(DRAFT_PROFILE_KEY);
-
-      const initialSaved = saved ? JSON.parse(saved) : defaultProfile;
-      setSavedProfile(initialSaved);
-
-      if (draft) {
-        setDraftProfile(JSON.parse(draft));
-      } else {
-        setDraftProfile(initialSaved);
+    if (userProfile) {
+      try {
+        const draft = localStorage.getItem(DRAFT_PROFILE_KEY);
+        if (draft) {
+          setDraftProfile(JSON.parse(draft));
+        } else {
+          setDraftProfile(userProfile);
+        }
+      } catch (error) {
+        console.error('Failed to parse draft profile from localStorage', error);
+        setDraftProfile(userProfile);
       }
-    } catch (error) {
-      console.error('Failed to parse profile from localStorage', error);
-      // If data is corrupted, reset to default
-      localStorage.setItem(SAVED_PROFILE_KEY, JSON.stringify(defaultProfile));
-      localStorage.removeItem(DRAFT_PROFILE_KEY);
-      setSavedProfile(defaultProfile);
-      setDraftProfile(defaultProfile);
     }
-  }, []);
+  }, [userProfile]);
 
-  // Sync draft changes to localStorage
   useEffect(() => {
-    if (isClient) {
+    if (isClient && draftProfile) {
       localStorage.setItem(DRAFT_PROFILE_KEY, JSON.stringify(draftProfile));
     }
   }, [draftProfile, isClient]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
-    setDraftProfile((prev) => ({ ...prev, [name]: value }));
+    setDraftProfile((prev) => (prev ? { ...prev, [name]: value } : null));
   };
 
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -79,46 +70,46 @@ export default function AccountPage() {
     if (file) {
       const reader = new FileReader();
       reader.onloadend = () => {
-        setDraftProfile((prev) => ({ ...prev, avatarUrl: reader.result as string }));
+        setDraftProfile((prev) => (prev ? { ...prev, avatarUrl: reader.result as string } : null));
       };
       reader.readAsDataURL(file);
     }
   };
 
   const handleSaveChanges = () => {
-    // Here you would typically send data to a backend API
-    // For this example, we'll just update the "saved" state and localStorage
-    setSavedProfile(draftProfile);
-    localStorage.setItem(SAVED_PROFILE_KEY, JSON.stringify(draftProfile));
-    localStorage.removeItem(DRAFT_PROFILE_KEY); // Clear the draft
-    toast({
+    if (draftProfile) {
+      updateProfile(draftProfile);
+      localStorage.removeItem(DRAFT_PROFILE_KEY);
+      toast({
         title: "Profile Saved!",
         description: "Your changes have been successfully saved.",
-    });
+      });
+    }
   };
 
   const handleCancel = () => {
-    setDraftProfile(savedProfile); // Revert changes to the last saved state
-    localStorage.removeItem(DRAFT_PROFILE_KEY);
+    if (userProfile) {
+      setDraftProfile(userProfile);
+      localStorage.removeItem(DRAFT_PROFILE_KEY);
+    }
   };
-  
+
   const handleResetProfile = () => {
-    localStorage.removeItem(SAVED_PROFILE_KEY);
-    localStorage.removeItem(DRAFT_PROFILE_KEY);
-    setSavedProfile(defaultProfile);
+    updateProfile(defaultProfile);
     setDraftProfile(defaultProfile);
+    localStorage.removeItem(DRAFT_PROFILE_KEY);
     toast({
-        title: "Profile Reset",
-        description: "Your profile has been reset to the default settings.",
-        variant: "destructive",
-    })
+      title: "Profile Reset",
+      description: "Your profile has been reset to the default settings.",
+      variant: "destructive",
+    });
   };
 
-  const hasUnsavedChanges = JSON.stringify(savedProfile) !== JSON.stringify(draftProfile);
-
-  if (!isClient) {
+  if (!isClient || !draftProfile || !userProfile) {
     return null; // or a loading skeleton
   }
+  
+  const hasUnsavedChanges = JSON.stringify(userProfile) !== JSON.stringify(draftProfile);
 
   return (
     <Card>
@@ -175,20 +166,20 @@ export default function AccountPage() {
         </div>
 
         <div className="flex flex-col gap-4 sm:flex-row sm:justify-end pt-4">
-            <Button variant="destructive" onClick={handleResetProfile} className="order-last sm:order-first">
-                <Trash2 className="mr-2 h-4 w-4" />
-                Reset to Default
+          <Button variant="destructive" onClick={handleResetProfile} className="order-last sm:order-first">
+            <Trash2 className="mr-2 h-4 w-4" />
+            Reset to Default
+          </Button>
+          <div className="flex gap-4">
+            <Button variant="outline" onClick={handleCancel} disabled={!hasUnsavedChanges}>
+              <X className="mr-2 h-4 w-4" />
+              Cancel
             </Button>
-            <div className="flex gap-4">
-                <Button variant="outline" onClick={handleCancel} disabled={!hasUnsavedChanges}>
-                    <X className="mr-2 h-4 w-4" />
-                    Cancel
-                </Button>
-                <Button onClick={handleSaveChanges} disabled={!hasUnsavedChanges}>
-                    <Save className="mr-2 h-4 w-4" />
-                    Save Changes
-                </Button>
-            </div>
+            <Button onClick={handleSaveChanges} disabled={!hasUnsavedChanges}>
+              <Save className="mr-2 h-4 w-4" />
+              Save Changes
+            </Button>
+          </div>
         </div>
       </CardContent>
     </Card>
