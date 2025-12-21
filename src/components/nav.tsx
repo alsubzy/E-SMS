@@ -367,7 +367,7 @@ export default function Nav() {
                 className="justify-between"
               >
                 <Link href={item.href}>
-                  <div>
+                  <div className="flex items-center gap-3">
                     <item.icon className="h-5 w-5" />
                     <span className="font-medium">{item.label}</span>
                   </div>
@@ -382,7 +382,7 @@ export default function Nav() {
                         isActive={pathname === subItem.href}
                       >
                         <Link href={subItem.href}>
-                          <div>
+                           <div className="flex items-center gap-2">
                             <subItem.icon className="h-4 w-4" />
                             <span>{subItem.label}</span>
                           </div>
