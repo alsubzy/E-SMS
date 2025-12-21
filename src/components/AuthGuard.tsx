@@ -12,11 +12,11 @@ export function AuthGuard({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     if (!isLoading) {
-      const isLoginPage = pathname === '/login';
+      const isAuthPage = pathname === '/login' || pathname === '/signup';
 
-      if (!isAuthenticated && !isLoginPage) {
+      if (!isAuthenticated && !isAuthPage) {
         router.replace('/login');
-      } else if (isAuthenticated && isLoginPage) {
+      } else if (isAuthenticated && isAuthPage) {
         router.replace('/');
       }
     }
@@ -27,20 +27,20 @@ export function AuthGuard({ children }: { children: ReactNode }) {
     return <div>Loading...</div>;
   }
   
-  const isLoginPage = pathname === '/login';
+  const isAuthPage = pathname === '/login' || pathname === '/signup';
 
-  // If not authenticated and not on login page, router will redirect, so we can return null or a loader.
-  if (!isAuthenticated && !isLoginPage) {
+  // If not authenticated and not on an auth page, router will redirect, so we can return null or a loader.
+  if (!isAuthenticated && !isAuthPage) {
       return null;
   }
 
-  // If authenticated and on login page, router will redirect, so we can return null or a loader.
-  if(isAuthenticated && isLoginPage) {
+  // If authenticated and on an auth page, router will redirect, so we can return null or a loader.
+  if(isAuthenticated && isAuthPage) {
       return null;
   }
 
-  // If on login page, just render the children without the main layout
-  if(isLoginPage){
+  // If on an auth page, just render the children without the main layout
+  if(isAuthPage){
     return <main className="bg-gray-100">{children}</main>
   }
   
