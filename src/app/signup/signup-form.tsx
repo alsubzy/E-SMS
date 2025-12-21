@@ -57,11 +57,7 @@ export function SignupForm() {
     });
     
     if (result.success) {
-      router.push('/');
-      toast({
-        title: 'Signup Successful!',
-        description: 'Welcome to your new dashboard.',
-      });
+      router.push('/login');
     } else {
       toast({
         variant: 'destructive',

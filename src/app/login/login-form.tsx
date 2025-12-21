@@ -7,7 +7,7 @@ import { useAuth } from '@/context/AuthContext';
 import { Eye, EyeOff } from 'lucide-react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { useState, FormEvent } from 'react';
+import { useState, FormEvent, useEffect } from 'react';
 import { useToast } from '@/hooks/use-toast';
 
 const GoogleIcon = () => (
@@ -28,13 +28,40 @@ const FacebookIcon = () => (
   </svg>
 );
 
+const LAST_REGISTERED_USER_KEY = 'last_registered_user';
+
 export function LoginForm() {
-  const [email, setEmail] = useState('admin@example.com');
-  const [password, setPassword] = useState('password');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const { login } = useAuth();
   const router = useRouter();
   const { toast } = useToast();
+
+  useEffect(() => {
+    try {
+      const lastRegisteredUserRaw = localStorage.getItem(LAST_REGISTERED_USER_KEY);
+      if (lastRegisteredUserRaw) {
+        const lastRegisteredUser = JSON.parse(lastRegisteredUserRaw);
+        if(lastRegisteredUser.email && lastRegisteredUser.password) {
+            setEmail(lastRegisteredUser.email);
+            setPassword(lastRegisteredUser.password);
+             toast({
+                title: 'Registration Successful',
+                description: 'Your credentials are saved. Please log in to continue.',
+            });
+        }
+      }
+      else {
+        // Default credentials if no one has just registered
+        setEmail('admin@example.com');
+        setPassword('password');
+      }
+    } catch (error) {
+      console.error("Failed to parse last registered user from localStorage", error);
+    }
+  }, [toast]);
+
 
   const handleSubmit = (event: FormEvent) => {
     event.preventDefault();

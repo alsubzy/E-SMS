@@ -44,6 +44,7 @@ const defaultProfile: UserProfile = {
 
 const ALL_USERS_KEY = 'all_users';
 const CURRENT_USER_KEY = 'current_user';
+const LAST_REGISTERED_USER_KEY = 'last_registered_user';
 
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
@@ -85,6 +86,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       setUserProfile(profileToStore);
       setIsAuthenticated(true);
       localStorage.setItem(CURRENT_USER_KEY, JSON.stringify(profileToStore));
+      localStorage.removeItem(LAST_REGISTERED_USER_KEY); // Clean up after login
       router.push('/');
       return true;
     }
@@ -106,12 +108,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     allUsers.push(newProfile);
     localStorage.setItem(ALL_USERS_KEY, JSON.stringify(allUsers));
     
-    const { password, ...profileToStore } = newProfile;
-    setUserProfile(profileToStore);
-    setIsAuthenticated(true);
-    localStorage.setItem(CURRENT_USER_KEY, JSON.stringify(profileToStore));
-    router.push('/');
-    return { success: true, message: 'Signup successful!' };
+    // Store credentials for auto-fill, but do not log in
+    localStorage.setItem(LAST_REGISTERED_USER_KEY, JSON.stringify({ email: newProfile.email, password: newProfile.password }));
+    
+    router.push('/login');
+    return { success: true, message: 'Signup successful! Please log in.' };
   };
 
   const logout = () => {
