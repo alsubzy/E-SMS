@@ -8,40 +8,37 @@ export default function LoginPage() {
   );
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-gray-100 p-4">
-      <div className="w-full max-w-4xl overflow-hidden rounded-2xl bg-white shadow-lg md:grid md:grid-cols-2">
-        <div className="relative hidden flex-col justify-between rounded-l-2xl bg-orange-500 p-10 text-white md:flex">
-          <div
-            className="absolute inset-0 bg-cover bg-center"
-            style={{
-              backgroundImage:
-                "url(\'data:image/svg+xml,%3Csvg width=\"100%\" height=\"100%\" xmlns=\"http://www.w3.org/2000/svg\"%3E%3Cdefs%3E%3Cpattern id=\"noise\" width=\"10\" height=\"10\" viewBox=\"0 0 10 10\"%3E%3Crect width=\"100%\" height=\"100%\" fill=\"%23F97316\"/%3E%3Cg fill-opacity=\"0.1\"%3E%3Ccircle cx=\"5\" cy=\"5\" r=\"1\" fill=\"%23FFFFFF\"/%3E%3C/g%3E%3C/pattern%3E%3C/defs%3E%3Crect width=\"100%\" height=\"100%\" fill=\"url(%23noise)\"/%3E%3C/svg%3E\')",
-            }}
-          />
-          <div className="relative z-10">
-            <h2 className="text-3xl font-bold leading-tight lg:text-4xl">
-              Simplify management with our dashboard.
+    <div className="flex min-h-screen items-center justify-center bg-gray-100 p-4 md:p-8">
+      <div className="w-full max-w-6xl overflow-hidden rounded-2xl bg-white shadow-lg md:grid md:grid-cols-2">
+        <div className="flex flex-col justify-between p-8 md:p-12">
+          <LoginForm />
+          <footer className="mt-8 text-center text-sm text-gray-500">
+            <div className="flex justify-between">
+                <p>Copyright © 2025 Sellora Enterprises LTD.</p>
+                <a href="#" className="hover:underline">Privacy Policy</a>
+            </div>
+          </footer>
+        </div>
+        <div className="relative hidden flex-col justify-center rounded-r-2xl bg-[#4A4DE6] p-12 text-white md:flex">
+          <div className="relative z-10 space-y-6">
+            <h2 className="text-4xl font-bold leading-tight lg:text-5xl">
+              Effortlessly manage your team and operations.
             </h2>
-            <p className="mt-4 text-orange-100">
-              Simplify your e-commerce management with our user-friendly admin
-              dashboard.
+            <p className="text-lg text-indigo-100">
+              Log in to access your CRM dashboard and manage your team.
             </p>
           </div>
           {loginIllustration && (
-            <div className="relative z-10 h-64 w-full">
+            <div className="relative z-10 mt-8 h-80 w-full">
               <Image
                 src={loginIllustration.imageUrl}
                 alt={loginIllustration.description}
                 fill
-                className="object-contain"
+                className="rounded-lg object-cover"
                 data-ai-hint={loginIllustration.imageHint}
               />
             </div>
           )}
-        </div>
-
-        <div className="flex items-center justify-center p-8 md:p-12">
-          <LoginForm />
         </div>
       </div>
     </div>
