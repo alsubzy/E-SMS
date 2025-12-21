@@ -52,8 +52,8 @@ const iaAcademyLogo = () => (
     <path d="M12.4939 24.3438V11.6562H15.0139V17.0362L19.9889 11.6562H22.9939L17.5189 17.5037L23.2339 24.3438H20.1389L16.2919 19.3337L15.0139 20.6812V24.3438H12.4939Z" fill="white"/>
     <defs>
     <linearGradient id="paint0_linear_2_22" x1="18" y1="0" x2="18" y2="36" gradientUnits="userSpaceOnUse">
-    <stop stop-color="#A020F0"/>
-    <stop offset="1" stop-color="#C040F0"/>
+    <stop stopColor="#A020F0"/>
+    <stop offset="1" stopColor="#C040F0"/>
     </linearGradient>
     </defs>
     </svg>   
