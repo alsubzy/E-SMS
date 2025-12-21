@@ -35,7 +35,7 @@ const statCards = [
 
 export default function Dashboard() {
   return (
-    <div className="flex flex-col gap-8">
+    <div className="flex flex-col gap-4 md:gap-8">
     <h1 className="text-2xl font-bold">Admin Dashboard</h1>
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
         {statCards.map((card, index) => (
@@ -50,11 +50,11 @@ export default function Dashboard() {
         ))}
       </div>
 
-      <div className="grid grid-cols-1 gap-8 lg:grid-cols-3">
+      <div className="grid grid-cols-1 gap-4 md:gap-8 lg:grid-cols-3">
         <Card className="lg:col-span-2">
-          <CardHeader className="flex flex-row justify-between items-center">
+          <CardHeader className="flex flex-col sm:flex-row justify-between items-start sm:items-center">
             <CardTitle>All Exam Result</CardTitle>
-            <div className="flex items-center gap-4">
+            <div className="flex items-center gap-4 mt-2 sm:mt-0">
                 <div className="flex items-center gap-2">
                     <div className="w-3 h-3 rounded-full bg-purple-600" />
                     <span className="text-sm">Teacher</span>
@@ -80,21 +80,21 @@ export default function Dashboard() {
         </Card>
       </div>
 
-      <div className="grid grid-cols-1 gap-8 lg:grid-cols-3">
+      <div className="grid grid-cols-1 gap-4 md:gap-8 lg:grid-cols-3">
         <Card className="lg:col-span-2">
           <CardHeader className="flex flex-row justify-between items-center">
             <CardTitle>Star Students</CardTitle>
             <MoreHorizontal className="h-5 w-5 text-muted-foreground" />
           </CardHeader>
-          <CardContent>
+          <CardContent className="overflow-x-auto">
             <Table>
               <TableHeader>
                 <TableRow>
                   <TableHead>Name</TableHead>
                   <TableHead>ID</TableHead>
-                  <TableHead>Marks</TableHead>
-                  <TableHead>Percent</TableHead>
-                  <TableHead>Year</TableHead>
+                  <TableHead className="hidden sm:table-cell">Marks</TableHead>
+                  <TableHead className="hidden sm:table-cell">Percent</TableHead>
+                  <TableHead className="hidden md:table-cell">Year</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
@@ -119,9 +119,9 @@ export default function Dashboard() {
                       </div>
                     </TableCell>
                     <TableCell>{student.id}</TableCell>
-                    <TableCell>{student.marks}</TableCell>
-                    <TableCell>{student.percent}%</TableCell>
-                    <TableCell>{student.year}</TableCell>
+                    <TableCell className="hidden sm:table-cell">{student.marks}</TableCell>
+                    <TableCell className="hidden sm:table-cell">{student.percent}%</TableCell>
+                    <TableCell className="hidden md:table-cell">{student.year}</TableCell>
                   </TableRow>
                 ))}
               </TableBody>
@@ -138,7 +138,7 @@ export default function Dashboard() {
             <div className="space-y-4">
               {recentActivities.map((activity) => (
                 <div key={activity.id} className="flex items-start gap-4 p-2 rounded-lg" style={{backgroundColor: activity.bgColor}}>
-                  <div className="flex h-10 w-10 items-center justify-center rounded-md" style={{backgroundColor: activity.iconBgColor}}>
+                  <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-md" style={{backgroundColor: activity.iconBgColor}}>
                     <activity.icon className="h-5 w-5" style={{color: activity.iconColor}} />
                   </div>
                   <div className="flex-1 space-y-1">
@@ -149,7 +149,7 @@ export default function Dashboard() {
                       {activity.description}
                     </p>
                   </div>
-                  <p className="text-sm text-muted-foreground">
+                  <p className="text-xs text-muted-foreground sm:text-sm">
                       {activity.timestamp}
                   </p>
                 </div>

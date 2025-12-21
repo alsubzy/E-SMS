@@ -19,7 +19,7 @@ export default function LoginPage() {
             }}
           />
           <div className="relative z-10">
-            <h2 className="text-4xl font-bold leading-tight">
+            <h2 className="text-3xl font-bold leading-tight lg:text-4xl">
               Simplify management with our dashboard.
             </h2>
             <p className="mt-4 text-orange-100">
