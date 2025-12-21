@@ -1,8 +1,6 @@
-
 'use client';
 
 import {
-  SidebarClose,
   SidebarContent,
   SidebarHeader,
   SidebarMenu,
@@ -13,7 +11,6 @@ import {
 } from '@/components/ui/sidebar';
 import {
   LayoutGrid,
-  ChevronDown,
   Users,
   GraduationCap,
   Briefcase,
@@ -33,7 +30,6 @@ import {
   BarChart2,
   Bell,
   PlusSquare,
-  Users2,
   Key,
   User,
   History,
@@ -96,7 +92,7 @@ const menuItems = [
     label: 'User Management',
     icon: Users,
     submenu: [
-      { href: '/users', label: 'Users', icon: Users2 },
+      { href: '/users', label: 'Users', icon: Users },
       { href: '/#', label: 'Roles & Permissions', icon: Key },
       { href: '/#', label: 'Staff Management', icon: Briefcase },
       { href: '/#', label: 'Parents', icon: User },
@@ -109,7 +105,7 @@ const menuItems = [
     icon: GraduationCap,
     submenu: [
       { href: '/academics', label: 'Classes / Grades', icon: BookCopy },
-      { href: '/#', label: 'Sections', icon: Users2 },
+      { href: '/#', label: 'Sections', icon: Users },
       { href: '/#', label: 'Subjects', icon: BookMarked },
       { href: '/#', label: 'Academic Calendar', icon: Calendar },
       { href: '/#', label: 'Class Timetable', icon: ClipboardList },
@@ -121,7 +117,7 @@ const menuItems = [
     label: 'Teacher Management',
     icon: Briefcase,
     submenu: [
-      { href: '/teachers', label: 'Teachers', icon: Users2 },
+      { href: '/teachers', label: 'Teachers', icon: Users },
       { href: '/#', label: 'Teacher Assignment', icon: UserCheck },
       { href: '/#', label: 'Teaching Schedule', icon: ClipboardList },
       { href: '/#', label: 'Teacher Attendance', icon: CalendarCheck },
@@ -133,7 +129,7 @@ const menuItems = [
     label: 'Student Management',
     icon: Users,
     submenu: [
-      { href: '/students', label: 'Students', icon: Users2 },
+      { href: '/students', label: 'Students', icon: Users },
       { href: '/#', label: 'Student Admission', icon: UserPlus },
       { href: '/#', label: 'Student Promotion', icon: TrendingUp },
       { href: '/#', label: 'Student Attendance', icon: CalendarCheck },
@@ -226,7 +222,7 @@ const menuItems = [
     submenu: [
       { href: '/hostel', label: 'Hostel Rooms', icon: Bed },
       { href: '/#', label: 'Room Allocation', icon: UserCheck },
-      { href: '/#', label: 'Hostel Attendance', icon: ClipboardCheck },
+      { href: '/hostel/attendance', label: 'Hostel Attendance', icon: ClipboardCheck },
       { href: '/#', label: 'Hostel Fees', icon: Wallet },
     ],
   },
@@ -326,8 +322,8 @@ const AppLogo = () => (
         y2="36"
         gradientUnits="userSpaceOnUse"
       >
-        <stop stopColor="#4A00E0" />
-        <stop offset="1" stopColor="#8E2DE2" />
+        <stop stopColor="#34495E" />
+        <stop offset="1" stopColor="#2C3E50" />
       </linearGradient>
     </defs>
   </svg>
@@ -348,12 +344,12 @@ export default function Nav() {
 
   return (
     <>
-      <SidebarHeader className="border-b-0 p-4">
-        <div className="flex items-center gap-2">
+      <SidebarHeader className="border-b border-sidebar-border p-4">
+        <div className="flex items-center gap-3">
           <AppLogo />
           <div className="flex flex-col">
-            <h2 className="text-lg font-semibold">CampusConnect</h2>
-            <p className="text-xs text-muted-foreground">School Management</p>
+            <h2 className="text-lg font-semibold text-sidebar-foreground">CampusConnect</h2>
+            <p className="text-xs text-sidebar-foreground/80">School Management</p>
           </div>
         </div>
       </SidebarHeader>
@@ -363,12 +359,12 @@ export default function Nav() {
             <SidebarMenuItem key={item.label}>
               <SidebarMenuButton
                 asChild
-                isActive={isActive(item.href)}
+                isActive={isActive(item.href) && !item.submenu}
                 onClick={() => handleMenuClick(item.label)}
                 className="justify-between"
               >
                 <Link href={item.href}>
-                  <div className="flex items-center gap-3">
+                  <div>
                     <item.icon className="h-5 w-5" />
                     <span className="font-medium">{item.label}</span>
                   </div>
@@ -383,7 +379,7 @@ export default function Nav() {
                         isActive={pathname === subItem.href}
                       >
                         <Link href={subItem.href}>
-                          <div className="flex items-center gap-2">
+                          <div>
                             <subItem.icon className="h-4 w-4" />
                             <span>{subItem.label}</span>
                           </div>
@@ -400,5 +396,3 @@ export default function Nav() {
     </>
   );
 }
-
-    
