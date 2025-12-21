@@ -4,7 +4,6 @@ import { Sidebar, SidebarProvider } from '@/components/ui/sidebar';
 import Nav from '@/components/nav';
 import Header from '@/components/header';
 import { Toaster } from '@/components/ui/toaster';
-import { AuthGuard } from '@/components/AuthGuard';
 
 export default function ClientLayout({
   children,
@@ -12,17 +11,15 @@ export default function ClientLayout({
   children: React.ReactNode;
 }) {
   return (
-    <AuthGuard>
-      <SidebarProvider>
-        <Sidebar>
-          <Nav />
-        </Sidebar>
-        <main className="flex flex-1 flex-col bg-[#F7F8FC]">
-          <Header />
-          <div className="flex-1 overflow-y-auto p-4 md:p-8">{children}</div>
-        </main>
-        <Toaster />
-      </SidebarProvider>
-    </AuthGuard>
+    <SidebarProvider>
+      <Sidebar>
+        <Nav />
+      </Sidebar>
+      <main className="flex flex-1 flex-col bg-[#F7F8FC]">
+        <Header />
+        <div className="flex-1 overflow-y-auto p-4 md:p-8">{children}</div>
+      </main>
+      <Toaster />
+    </SidebarProvider>
   );
 }

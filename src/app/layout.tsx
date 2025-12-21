@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import './globals.css';
-import ClientLayout from './client-layout';
 import { AuthProvider } from '@/context/AuthContext';
+import { AuthGuard } from '@/components/AuthGuard';
 
 export const metadata: Metadata = {
   title: 'ia Academy',
@@ -29,7 +29,7 @@ export default function RootLayout({
       </head>
       <body className="font-body antialiased" suppressHydrationWarning>
         <AuthProvider>
-          <ClientLayout>{children}</ClientLayout>
+          <AuthGuard>{children}</AuthGuard>
         </AuthProvider>
       </body>
     </html>
