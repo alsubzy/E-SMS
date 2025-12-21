@@ -29,10 +29,11 @@ import {
   Wrench,
   User,
   ChevronRight,
+  Lock,
 } from 'lucide-react';
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
-import { useState } from 'react';
+import { usePathname, useRouter } from 'next/navigation';
+import { useState, useEffect } from 'react';
 import { useAuth } from '@/context/AuthContext';
 
 const menuItems = [
@@ -194,7 +195,7 @@ const menuItems = [
       { label: 'In-App Notifications', href: '/communication/in-app' },
     ],
   },
-   {
+  {
     label: 'Reports & Analytics',
     icon: BarChart3,
     href: '/reports',
@@ -204,7 +205,7 @@ const menuItems = [
       { label: 'Financial Reports', href: '/reports/financial' },
       { label: 'Teacher Performance', href: '/reports/teacher-performance' },
       { label: 'Custom Reports', href: '/reports/custom' },
-       { label: 'AI Summarizer', href: '/reports/summarize' },
+      { label: 'AI Summarizer', href: '/reports/summarize' },
     ],
   },
   {
@@ -247,8 +248,8 @@ const menuItems = [
     href: '/account',
     submenu: [
       { label: 'Profile', href: '/account' },
-      // The logout functionality is handled in the Header component for now
-      // If a dedicated logout button is needed here, it requires special handling
+      { label: 'Change Password', href: '/account/change-password' },
+      { label: 'Preferences', href: '/account/preferences' },
     ],
   },
 ];
@@ -287,9 +288,9 @@ const AppLogo = () => (
 
 export default function Nav() {
   const pathname = usePathname();
+  const router = useRouter();
   const { logout } = useAuth();
   
-  // Find the initially open menu based on the current path
   const initiallyOpenMenu =
     menuItems.find((item) =>
       item.submenu?.some((sub) => sub.href === pathname)
@@ -300,22 +301,33 @@ export default function Nav() {
     setOpenMenu(openMenu === label ? null : label);
   };
   
-  // This effect ensures the correct menu is open on initial render and page changes
-  useState(() => {
+  useEffect(() => {
     const currentOpen = menuItems.find((item) =>
       item.submenu?.some((sub) => sub.href === pathname)
     )?.label;
     if (currentOpen) {
       setOpenMenu(currentOpen);
     }
-  });
+  }, [pathname]);
   
-  const isMenuItemActive = (itemHref: string, hasSubmenu: boolean) => {
+  const isMenuItemActive = (itemHref: string, hasSubmenu?: boolean) => {
     if (hasSubmenu) {
-      return pathname.startsWith(itemHref);
+      // For items with submenus, check if the current path starts with the item's href,
+      // but only if the href is not just '/'. This prevents 'Dashboard' from being active for all routes.
+      return itemHref !== '/' && pathname.startsWith(itemHref);
     }
     return pathname === itemHref;
   };
+  
+  const handleParentClick = (item: typeof menuItems[0]) => {
+    if (item.submenu) {
+      handleMenuToggle(item.label);
+    }
+    if (item.href) {
+      router.push(item.href);
+    }
+  };
+
 
   return (
     <>
@@ -337,9 +349,9 @@ export default function Nav() {
           {menuItems.map((item) => (
             <SidebarMenuItem key={item.label}>
               <SidebarMenuButton
-                onClick={() => handleMenuToggle(item.label)}
-                isActive={isMenuItemActive(item.href, !!item.submenu)}
-                className="justify-between group"
+                 onClick={() => handleParentClick(item)}
+                 isActive={isMenuItemActive(item.href, !!item.submenu) || (item.href === '/' && pathname === '/')}
+                 className="justify-between group"
               >
                 <div className="flex items-center gap-3">
                   <item.icon className="h-5 w-5" />
@@ -366,18 +378,19 @@ export default function Nav() {
                       </SidebarMenuSubButton>
                     </SidebarMenuItem>
                   ))}
-                  {/* Special case for logout under 'My Account' */}
-                  {item.label === 'My Account' && (
-                     <SidebarMenuItem>
-                        <SidebarMenuSubButton onClick={logout}>
-                          Logout
-                        </SidebarMenuSubButton>
-                    </SidebarMenuItem>
-                  )}
                 </SidebarMenuSub>
               )}
             </SidebarMenuItem>
           ))}
+          {/* Logout button separate at the bottom */}
+          <SidebarMenuItem>
+            <SidebarMenuButton onClick={logout} className="justify-between group">
+              <div className="flex items-center gap-3">
+                <Lock className="h-5 w-5" />
+                <span>Logout</span>
+              </div>
+            </SidebarMenuButton>
+          </SidebarMenuItem>
         </SidebarMenu>
       </SidebarContent>
     </>
