@@ -1,4 +1,4 @@
-import type { StarStudent, RecentActivity, ExamResult, Student } from '@/lib/types';
+import type { StarStudent, RecentActivity, ExamResult, Student, Mentor, Course, Lesson } from '@/lib/types';
 import { placeholderImages } from './placeholder-images.json';
 import { User, Wallet, GraduationCap as NewCourseIcon } from 'lucide-react';
 
@@ -112,4 +112,67 @@ export const examResultData: ExamResult[] = [
     { month: 'Oct', teacher: 75, student: 65 },
     { month: 'Nov', teacher: 60, student: 45 },
     { month: 'Dec', teacher: 50, student: 30 },
+]
+
+export const placeholderMentors: Mentor[] = [
+  { id: 'mentor-1', name: 'Padhang Satrio', avatarUrl: 'https://i.pravatar.cc/150?u=mentor1' },
+  { id: 'mentor-2', name: 'Zakir Horizontal', avatarUrl: 'https://i.pravatar.cc/150?u=mentor2' },
+  { id: 'mentor-3', name: 'Leonardo Samsul', avatarUrl: 'https://i.pravatar.cc/150?u=mentor3' },
+];
+
+export const placeholderCourses: Course[] = [
+  {
+    id: 'course-1',
+    title: "Beginner's Guide to Becoming a Professional Front-End Developer",
+    category: 'FRONT END',
+    thumbnailUrl: 'https://images.unsplash.com/photo-1542831371-29b0f74f9713?q=80&w=2070&auto=format&fit=crop',
+    imageHint: 'coding programming',
+    mentor: placeholderMentors[2],
+    badgeColor: 'bg-blue-100 text-blue-800 dark:bg-blue-900/50 dark:text-blue-300'
+  },
+  {
+    id: 'course-2',
+    title: 'Optimizing User Experience with the Best UI/UX Design',
+    category: 'UI/UX DESIGN',
+    thumbnailUrl: 'https://images.unsplash.com/photo-1581291518857-4e27b48ff24e?q=80&w=2070&auto=format&fit=crop',
+    imageHint: 'design wireframe',
+    mentor: { id: 'mentor-4', name: 'Bayu Salto', avatarUrl: 'https://i.pravatar.cc/150?u=mentor4' },
+    badgeColor: 'bg-purple-100 text-purple-800 dark:bg-purple-900/50 dark:text-purple-300'
+  },
+  {
+    id: 'course-3',
+    title: 'Reviving and Refreshing a Company Image',
+    category: 'BRANDING',
+    thumbnailUrl: 'https://images.unsplash.com/photo-1557862921-37829c790f19?q=80&w=2071&auto=format&fit=crop',
+    imageHint: 'branding company',
+    mentor: placeholderMentors[0],
+    badgeColor: 'bg-pink-100 text-pink-800 dark:bg-pink-900/50 dark:text-pink-300'
+  }
+];
+
+export const placeholderLessons: Lesson[] = [
+    {
+        id: 'lesson-1',
+        mentor: placeholderMentors[0],
+        date: '2/16/2004',
+        type: 'UI/UX DESIGN',
+        description: 'Understand Of UI/UX Design',
+        badgeColor: 'bg-purple-100 text-purple-800 dark:bg-purple-900/50 dark:text-purple-300'
+    },
+     {
+        id: 'lesson-2',
+        mentor: placeholderMentors[1],
+        date: '3/1/2004',
+        type: 'FRONT END',
+        description: 'Introduction to React',
+        badgeColor: 'bg-blue-100 text-blue-800 dark:bg-blue-900/50 dark:text-blue-300'
+    },
+     {
+        id: 'lesson-3',
+        mentor: placeholderMentors[2],
+        date: '4/20/2004',
+        type: 'BRANDING',
+        description: 'Creating a Brand Identity',
+        badgeColor: 'bg-pink-100 text-pink-800 dark:bg-pink-900/50 dark:text-pink-300'
+    }
 ]

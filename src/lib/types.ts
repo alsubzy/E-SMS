@@ -45,3 +45,28 @@ export type ExamResult = {
     teacher: number;
     student: number;
 }
+
+export type Mentor = {
+  id: string;
+  name: string;
+  avatarUrl: string;
+}
+
+export type Course = {
+  id: string;
+  title: string;
+  category: string;
+  thumbnailUrl: string;
+  imageHint: string;
+  mentor: Mentor;
+  badgeColor: string;
+}
+
+export type Lesson = {
+  id: string;
+  mentor: Mentor;
+  date: string;
+  type: string;
+  description: string;
+  badgeColor: string;
+}
