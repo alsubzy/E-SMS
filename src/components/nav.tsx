@@ -29,103 +29,221 @@ import {
   ShieldCheck,
   Wrench,
   UserCircle,
+  BarChart2,
+  Bell,
+  PlusSquare,
+  Users2,
+  UserCheck,
+  UserX,
+  FileClock,
+  BookCopy,
+  Calendar,
+  ClipboardList,
+  BookMarked,
+  Award,
+  BookText,
+  Percent,
+  Calculator,
+  Landmark,
+  CreditCard,
+  Receipt,
+  Gift,
+  Truck,
+  Map,
+  Car,
+  Ticket,
+  ClipboardCheck,
+  Wallet,
+  Mail,
+  MessageSquare,
+  History,
+  Activity,
+  FileCog,
+  RefreshCcw,
+  Key,
+  DatabaseZap,
+  Share2,
+  Webhook,
+  Lock,
+  Cog,
+  User,
+  Heart,
+  UserPlus,
+  TrendingUp,
+  FileQuestion,
+  BadgeCheck,
+  Boxes,
+  TrendingDown,
+  LogOut,
 } from 'lucide-react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useState } from 'react';
 
 const menuItems = [
-  {
-    href: '/',
-    label: 'Dashboard',
-    icon: LayoutGrid,
-  },
-  {
-    href: '/users',
-    label: 'User Management',
-    icon: Users,
-  },
-  {
-    href: '/academics',
-    label: 'Academic Management',
-    icon: GraduationCap,
-  },
-  {
-    href: '/teachers',
-    label: 'Teacher Management',
-    icon: Briefcase,
-  },
-  {
-    href: '/students',
-    label: 'Student Management',
-    icon: Users,
-  },
-  {
-    href: '/lms',
-    label: 'Learning Management',
-    icon: BookOpen,
-  },
-  {
-    href: '/examinations',
-    label: 'Examination & Results',
-    icon: FileText,
-  },
-  {
-    href: '/attendance',
-    label: 'Attendance',
-    icon: CalendarCheck,
-  },
-  {
-    href: '/accounting',
-    label: 'Fees & Accounting',
-    icon: Banknote,
-  },
-  {
-    href: '/inventory',
-    label: 'Inventory & Assets',
-    icon: Box,
-  },
-  {
-    href: '/transport',
-    label: 'Transport Management',
-    icon: Bus,
-  },
-  {
-    href: '/hostel',
-    label: 'Hostel / Boarding',
-    icon: Bed,
-  },
-  {
-    href: '/communication',
-    label: 'Communication',
-    icon: Megaphone,
-  },
-  {
-    href: '/reports',
-    label: 'Reports & Analytics',
-    icon: AreaChart,
-  },
-  {
-    href: '/settings',
-    label: 'System Settings',
-    icon: Settings,
-  },
-  {
-    href: '/security',
-    label: 'Security & Audit',
-    icon: ShieldCheck,
-  },
-  {
-    href: '/utilities',
-    label: 'Utilities',
-    icon: Wrench,
-  },
-  {
-    href: '/account',
-    label: 'My Account',
-    icon: UserCircle,
-  },
+    { href: '/', label: 'Dashboard', icon: LayoutGrid,
+        submenu: [
+            { href: '#', label: 'Overview', icon: BarChart2 },
+            { href: '#', label: 'Analytics', icon: AreaChart },
+            { href: '#', label: 'Notifications', icon: Bell },
+            { href: '#', label: 'Quick Actions', icon: PlusSquare },
+        ]
+     },
+    { href: '/users', label: 'User Management', icon: Users,
+        submenu: [
+            { href: '/users', label: 'Users', icon: Users2 },
+            { href: '#', label: 'Roles & Permissions', icon: Key },
+            { href: '#', label: 'Staff Management', icon: Briefcase },
+            { href: '#', label: 'Parents', icon: User },
+            { href: '#', label: 'User Activity Logs', icon: History },
+        ]
+     },
+    { href: '/academics', label: 'Academic Management', icon: GraduationCap,
+        submenu: [
+            { href: '#', label: 'Classes / Grades', icon: BookCopy },
+            { href: '#', label: 'Sections', icon: Users2 },
+            { href: '#', label: 'Subjects', icon: BookMarked },
+            { href: '#', label: 'Academic Calendar', icon: Calendar },
+            { href: '#', label: 'Class Timetable', icon: ClipboardList },
+            { href: '#', label: 'Syllabus Management', icon: BookText },
+        ]
+    },
+    { href: '/teachers', label: 'Teacher Management', icon: Briefcase,
+        submenu: [
+            { href: '/teachers', label: 'Teachers', icon: Users2 },
+            { href: '#', label: 'Teacher Assignment', icon: UserCheck },
+            { href: '#', label: 'Teaching Schedule', icon: ClipboardList },
+            { href: '#', label: 'Teacher Attendance', icon: CalendarCheck },
+            { href: '#', label: 'Performance Evaluation', icon: Percent },
+        ]
+    },
+    { href: '/students', label: 'Student Management', icon: Users,
+        submenu: [
+            { href: '/students', label: 'Students', icon: Users2 },
+            { href: '#', label: 'Student Admission', icon: UserPlus },
+            { href: '#', label: 'Student Promotion', icon: TrendingUp },
+            { href: '#', label: 'Student Attendance', icon: CalendarCheck },
+            { href: '#', label: 'Student Profiles', icon: UserCircle },
+            { href: '#', label: 'Discipline Records', icon: UserX },
+        ]
+    },
+    { href: '/lms', label: 'Learning Management', icon: BookOpen,
+        submenu: [
+            { href: '/lms', label: 'Courses', icon: BookCopy },
+            { href: '#', label: 'Lessons', icon: BookMarked },
+            { href: '#', label: 'Assignments', icon: FileText },
+            { href: '#', label: 'Exams / Quizzes', icon: FileQuestion },
+            { href: '#', label: 'Results & Grades', icon: Award },
+            { href: '#', label: 'Certificates', icon: BadgeCheck },
+        ]
+    },
+    { href: '/examinations', label: 'Examination & Results', icon: FileText,
+        submenu: [
+            { href: '/examinations', label: 'Exam Setup', icon: Cog },
+            { href: '#', label: 'Exam Schedule', icon: Calendar },
+            { href: '#', label: 'Marks Entry', icon: Calculator },
+            { href: '#', label: 'Grading System', icon: Percent },
+            { href: '#', label: 'Report Cards', icon: BookText },
+            { href: '#', label: 'Transcripts', icon: FileText },
+        ]
+    },
+    { href: '/attendance', label: 'Attendance', icon: CalendarCheck,
+        submenu: [
+            { href: '/attendance', label: 'Student Attendance', icon: UserCheck },
+            { href: '#', label: 'Teacher Attendance', icon: UserCheck },
+            { href: '#', label: 'Staff Attendance', icon: UserCheck },
+            { href: '#', label: 'Attendance Reports', icon: BarChart2 },
+        ]
+    },
+    { href: '/accounting', label: 'Fees & Accounting', icon: Banknote,
+        submenu: [
+            { href: '/accounting', label: 'Fee Structure', icon: Landmark },
+            { href: '#', label: 'Fee Collection', icon: CreditCard },
+            { href: '#', label: 'Invoices', icon: Receipt },
+            { href: '#', label: 'Payments', icon: Wallet },
+            { href: '#', label: 'Scholarships', icon: Gift },
+            { href: '#', label: 'Financial Reports', icon: BarChart2 },
+        ]
+    },
+    { href: '/inventory', label: 'Inventory & Assets', icon: Box,
+        submenu: [
+            { href: '/inventory', label: 'School Assets', icon: Landmark },
+            { href: '#', label: 'Asset Assignment', icon: UserCheck },
+            { href: '#', label: 'Inventory Stock', icon: Boxes },
+            { href: '#', label: 'Maintenance Records', icon: Wrench },
+            { href: '#', label: 'Depreciation', icon: TrendingDown },
+        ]
+    },
+    { href: '/transport', label: 'Transport Management', icon: Bus,
+        submenu: [
+            { href: '/transport', label: 'Vehicles', icon: Truck },
+            { href: '#', label: 'Routes', icon: Map },
+            { href: '#', label: 'Drivers', icon: Car },
+            { href: '#', label: 'Student Transport Allocation', icon: UserCheck },
+            { href: '#', label: 'Transport Fees', icon: Ticket },
+        ]
+    },
+    { href: '/hostel', label: 'Hostel / Boarding', icon: Bed,
+        submenu: [
+            { href: '/hostel', label: 'Hostel Rooms', icon: Bed },
+            { href: '#', label: 'Room Allocation', icon: UserCheck },
+            { href: '#', label: 'Hostel Attendance', icon: ClipboardCheck },
+            { href: '#', label: 'Hostel Fees', icon: Wallet },
+        ]
+    },
+    { href: '/communication', label: 'Communication', icon: Megaphone,
+        submenu: [
+            { href: '/communication', label: 'Announcements', icon: Megaphone },
+            { href: '#', label: 'Notices', icon: FileText },
+            { href: '#', label: 'Email / SMS', icon: Mail },
+            { href: '#', label: 'Parent Messaging', icon: MessageSquare },
+            { href: '#', label: 'In-App Notifications', icon: Bell },
+        ]
+    },
+    { href: '/reports', label: 'Reports & Analytics', icon: AreaChart,
+        submenu: [
+            { href: '/reports/summarize', label: 'Academic Reports', icon: BarChart2 },
+            { href: '#', label: 'Attendance Reports', icon: BarChart2 },
+            { href: '#', label: 'Financial Reports', icon: BarChart2 },
+            { href: '#', label: 'Teacher Performance', icon: BarChart2 },
+            { href: '#', label: 'Custom Reports', icon: FileCog },
+        ]
+    },
+    { href: '/settings', label: 'System Settings', icon: Settings,
+        submenu: [
+            { href: '/settings', label: 'School Profile', icon: Landmark },
+            { href: '#', label: 'Academic Year', icon: Calendar },
+            { href: '#', label: 'Class & Grade Setup', icon: Cog },
+            { href: '#', label: 'System Preferences', icon: Cog },
+            { href: '#', label: 'Backup & Restore', icon: RefreshCcw },
+        ]
+    },
+    { href: '/security', label: 'Security & Audit', icon: ShieldCheck,
+        submenu: [
+            { href: '/security', label: 'Login History', icon: History },
+            { href: '#', label: 'Audit Trail', icon: Activity },
+            { href: '#', label: 'Activity Logs', icon: FileClock },
+            { href: '#', label: 'Permissions Review', icon: Key },
+        ]
+    },
+    { href: '/utilities', label: 'Utilities', icon: Wrench,
+        submenu: [
+            { href: '/utilities', label: 'Import / Export', icon: DatabaseZap },
+            { href: '#', label: 'Data Migration', icon: RefreshCcw },
+            { href: '#', label: 'API Access', icon: Share2 },
+            { href: '#', label: 'Webhooks', icon: Webhook },
+        ]
+    },
+    { href: '/account', label: 'My Account', icon: UserCircle,
+        submenu: [
+            { href: '/account', label: 'Profile', icon: UserCircle },
+            { href: '#', label: 'Change Password', icon: Lock },
+            { href: '#', label: 'Preferences', icon: Cog },
+            { href: '#', label: 'Logout', icon: LogOut },
+        ]
+    },
 ];
+
 
 const AppLogo = () => (
     <svg width="36" height="36" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -142,10 +260,16 @@ const AppLogo = () => (
 
 export default function Nav() {
   const pathname = usePathname();
+  const [openMenu, setOpenMenu] = useState<string | null>(null);
 
   function isActive(path: string) {
-    return pathname === path;
+    if(path === '/') return pathname === path;
+    return pathname.startsWith(path);
   }
+
+  const handleMenuClick = (label: string) => {
+    setOpenMenu(openMenu === label ? null : label);
+  };
 
   return (
     <>
@@ -161,19 +285,34 @@ export default function Nav() {
       <SidebarContent className="p-4">
         <SidebarMenu>
           {menuItems.map((item) => (
-            <SidebarMenuItem key={item.href}>
-              <SidebarMenuButton
+            <SidebarMenuItem key={item.label}>
+               <SidebarMenuButton
                 asChild
                 isActive={isActive(item.href)}
-                className={`justify-start text-gray-600 hover:text-black ${isActive(item.href) ? 'text-black bg-gray-100' : ''}`}
+                onClick={() => handleMenuClick(item.label)}
+                className="justify-between"
               >
-                  <Link href={item.href}>
-                    <div className="flex items-center gap-3">
-                      <item.icon className="h-5 w-5" />
-                      <span className='font-medium'>{item.label}</span>
-                    </div>
-                  </Link>
+                <Link href={item.href}>
+                  <div className="flex items-center gap-3">
+                    <item.icon className="h-5 w-5" />
+                    <span className='font-medium'>{item.label}</span>
+                  </div>
+                </Link>
               </SidebarMenuButton>
+              {item.submenu && openMenu === item.label && (
+                <SidebarMenuSub>
+                  {item.submenu.map(subItem => (
+                     <SidebarMenuItem key={subItem.label}>
+                        <SidebarMenuSubButton asChild isActive={pathname === subItem.href}>
+                           <Link href={subItem.href}>
+                            <subItem.icon className="h-4 w-4" />
+                            <span>{subItem.label}</span>
+                           </Link>
+                        </SidebarMenuSubButton>
+                     </SidebarMenuItem>
+                  ))}
+                </SidebarMenuSub>
+              )}
             </SidebarMenuItem>
           ))}
         </SidebarMenu>
