@@ -18,8 +18,8 @@ const iaAcademyLogo = () => (
     <path d="M9.65137 25.1375L14.4164 12.3069H17.0195L13.1095 22.8463L18.4981 12.3069H20.9856L15.3537 23.3631L21.4931 25.1375H18.7745L15.5495 23.8331L12.4414 25.1375H9.65137Z" fill="white"/>
     <defs>
     <linearGradient id="paint0_linear_login" x1="18" y1="0" x2="18" y2="36" gradientUnits="userSpaceOnUse">
-    <stop stopColor="#4A00E0"/>
-    <stop offset="1" stopColor="#8E2DE2"/>
+    <stop stopColor="#10897a"/>
+    <stop offset="1" stopColor="#00695C"/>
     </linearGradient>
     </defs>
     </svg>   
@@ -194,5 +194,3 @@ export function LoginForm() {
     </div>
   );
 }
-
-    

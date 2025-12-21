@@ -35,7 +35,7 @@ export default function Header() {
   };
 
   return (
-    <header className="sticky top-0 z-10 flex h-20 items-center gap-4 border-b bg-background px-4 md:px-8">
+    <header className="sticky top-0 z-10 flex h-16 items-center gap-4 border-b bg-background px-4 md:px-8">
       <div className="flex items-center gap-4">
         <SidebarTrigger className="md:hidden" />
       </div>
@@ -47,7 +47,7 @@ export default function Header() {
             <Input
               type="search"
               placeholder="Search..."
-              className="pl-8 sm:w-[300px] md:w-[200px] lg:w-[300px] rounded-full bg-white"
+              className="pl-8 sm:w-[300px] md:w-[200px] lg:w-[300px] rounded-md bg-background"
             />
           </div>
         </form>
@@ -63,7 +63,7 @@ export default function Header() {
             >
               {userProfile && (
                 <>
-                  <Avatar className="h-10 w-10">
+                  <Avatar className="h-8 w-8">
                     <AvatarImage
                       src={userProfile.avatarUrl}
                       alt={userProfile.fullName}
@@ -86,10 +86,7 @@ export default function Header() {
             <DropdownMenuItem asChild>
               <Link href="/account">View Profile</Link>
             </DropdownMenuItem>
-            <DropdownMenuItem asChild>
-              <Link href="/account">Edit Profile</Link>
-            </DropdownMenuItem>
-            <DropdownMenuItem>Change Password</DropdownMenuItem>
+            <DropdownMenuItem>Settings</DropdownMenuItem>
             <DropdownMenuSeparator />
             <DropdownMenuItem onClick={handleLogout}>
               Logout

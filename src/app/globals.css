@@ -14,7 +14,7 @@ body {
     --card-foreground: 240 10% 3.9%;
     --popover: 0 0% 100%;
     --popover-foreground: 240 10% 3.9%;
-    --primary: 210 40% 50%;
+    --primary: 168 100% 25%; /* Dark Teal for active state */
     --primary-foreground: 0 0% 98%;
     --secondary: 240 5% 96%;
     --secondary-foreground: 240 10% 3.9%;
@@ -26,21 +26,23 @@ body {
     --destructive-foreground: 0 0% 98%;
     --border: 240 5.9% 90%;
     --input: 240 5.9% 90%;
-    --ring: 210 40% 50%;
+    --ring: 168 100% 25%;
     --chart-1: 210 84% 60%;
     --chart-2: 25 95% 53%;
     --chart-3: 197 37% 24%;
     --chart-4: 43 74% 66%;
     --chart-5: 27 87% 67%;
-    --radius: 0.8rem;
-    --sidebar-background: 222 47% 11%;
-    --sidebar-foreground: 210 40% 98%;
-    --sidebar-primary: 210 40% 50%;
-    --sidebar-primary-foreground: 0 0% 98%;
-    --sidebar-accent: 217 33% 17%;
-    --sidebar-accent-foreground: 0 0% 98%;
-    --sidebar-border: 217 33% 17%;
-    --sidebar-ring: 210 40% 50%;
+    --radius: 0.5rem; /* Adjusted for pill shape */
+
+    /* New Sidebar Styles */
+    --sidebar-background: 0 0% 100%;
+    --sidebar-foreground: 240 10% 3.9%;
+    --sidebar-primary: 168 100% 25%; /* Active background */
+    --sidebar-primary-foreground: 0 0% 98%; /* Active text */
+    --sidebar-accent: 240 5% 96%; /* Hover background */
+    --sidebar-accent-foreground: 240 10% 3.9%; /* Hover text */
+    --sidebar-border: 240 5.9% 90%;
+    --sidebar-ring: 168 100% 25%;
   }
   .dark {
     --background: 240 10% 3.9%;
@@ -49,7 +51,7 @@ body {
     --card-foreground: 0 0% 98%;
     --popover: 240 10% 3.9%;
     --popover-foreground: 0 0% 98%;
-    --primary: 210 40% 50%;
+    --primary: 168 100% 25%;
     --primary-foreground: 0 0% 98%;
     --secondary: 240 3.7% 15.9%;
     --secondary-foreground: 0 0% 98%;
@@ -61,17 +63,19 @@ body {
     --destructive-foreground: 0 0% 98%;
     --border: 240 3.7% 15.9%;
     --input: 240 3.7% 15.9%;
-    --ring: 210 40% 50%;
+    --ring: 168 100% 25%;
     --chart-1: 210 84% 60%;
     --chart-2: 25 95% 53%;
-    --sidebar-background: 222 47% 11%;
-    --sidebar-foreground: 210 40% 98%;
-    --sidebar-primary: 210 40% 50%;
+
+    /* New Sidebar Styles (Dark) */
+    --sidebar-background: 240 4% 10%; /* Darker background */
+    --sidebar-foreground: 0 0% 98%;
+    --sidebar-primary: 168 100% 25%;
     --sidebar-primary-foreground: 0 0% 98%;
-    --sidebar-accent: 217 33% 17%;
+    --sidebar-accent: 240 3.7% 15.9%;
     --sidebar-accent-foreground: 0 0% 98%;
-    --sidebar-border: 217 33% 17%;
-    --sidebar-ring: 210 40% 50%;
+    --sidebar-border: 240 3.7% 15.9%;
+    --sidebar-ring: 168 100% 25%;
   }
 }
 
