@@ -33,47 +33,46 @@ import {
   Bell,
   PlusSquare,
   Users2,
-  UserCheck,
-  UserX,
-  FileClock,
+  Key,
+  User,
+  History,
   BookCopy,
   Calendar,
   ClipboardList,
   BookMarked,
-  Award,
   BookText,
+  UserCheck,
   Percent,
+  UserPlus,
+  TrendingUp,
+  UserX,
+  FileQuestion,
+  Award,
+  BadgeCheck,
+  Cog,
   Calculator,
   Landmark,
   CreditCard,
   Receipt,
   Gift,
+  Wallet,
+  Boxes,
+  TrendingDown,
   Truck,
   Map,
   Car,
   Ticket,
   ClipboardCheck,
-  Wallet,
   Mail,
   MessageSquare,
-  History,
+  FileClock,
   Activity,
   FileCog,
   RefreshCcw,
-  Key,
-  DatabaseZap,
   Share2,
   Webhook,
   Lock,
-  Cog,
-  User,
   LogOut,
-  UserPlus,
-  TrendingUp,
-  FileQuestion,
-  BadgeCheck,
-  Boxes,
-  TrendingDown,
 } from 'lucide-react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
@@ -282,7 +281,7 @@ const menuItems = [
     label: 'Utilities',
     icon: Wrench,
     submenu: [
-      { href: '/utilities', label: 'Import / Export', icon: DatabaseZap },
+      { href: '/utilities', label: 'Import / Export', icon: Share2 },
       { href: '#', label: 'Data Migration', icon: RefreshCcw },
       { href: '#', label: 'API Access', icon: Share2 },
       { href: '#', label: 'Webhooks', icon: Webhook },
@@ -383,8 +382,10 @@ export default function Nav() {
                         isActive={pathname === subItem.href}
                       >
                         <Link href={subItem.href}>
-                          <subItem.icon className="h-4 w-4" />
-                          <span>{subItem.label}</span>
+                          <div>
+                            <subItem.icon className="h-4 w-4" />
+                            <span>{subItem.label}</span>
+                          </div>
                         </Link>
                       </SidebarMenuSubButton>
                     </SidebarMenuItem>
