@@ -24,7 +24,7 @@ interface AuthContextType {
   isAuthenticated: boolean;
   isLoading: boolean;
   userProfile: UserProfile | null;
-  login: (email: string, pass: string) => boolean;
+  login: (email: string, pass: string, rememberMe?: boolean) => boolean;
   logout: () => void;
   signup: (newProfile: UserProfile) => { success: boolean; message: string };
   updateProfile: (newProfile: UserProfile) => void;
@@ -60,20 +60,26 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         localStorage.setItem(ALL_USERS_KEY, JSON.stringify([defaultProfile]));
       }
 
-      const currentUser = localStorage.getItem(CURRENT_USER_KEY);
+      // Check for persistent session first
+      let currentUser = localStorage.getItem(CURRENT_USER_KEY);
+      // If not found, check for session-only storage
+      if (!currentUser) {
+        currentUser = sessionStorage.getItem(CURRENT_USER_KEY);
+      }
+
       if (currentUser) {
         const profile = JSON.parse(currentUser);
         setUserProfile(profile);
         setIsAuthenticated(true);
       }
     } catch (error) {
-      console.error("Failed to parse data from localStorage", error);
+      console.error("Failed to parse data from storage", error);
     } finally {
       setIsLoading(false);
     }
   }, []);
 
-  const login = (email: string, pass: string) => {
+  const login = (email: string, pass: string, rememberMe = false) => {
     const allUsersRaw = localStorage.getItem(ALL_USERS_KEY);
     const allUsers: UserProfile[] = allUsersRaw ? JSON.parse(allUsersRaw) : [];
     
@@ -85,7 +91,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       const { password, ...profileToStore } = foundUser;
       setUserProfile(profileToStore);
       setIsAuthenticated(true);
-      localStorage.setItem(CURRENT_USER_KEY, JSON.stringify(profileToStore));
+
+      const storage = rememberMe ? localStorage : sessionStorage;
+      storage.setItem(CURRENT_USER_KEY, JSON.stringify(profileToStore));
+      
       localStorage.removeItem(LAST_REGISTERED_USER_KEY); // Clean up after login
       router.push('/');
       return true;
@@ -119,6 +128,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setIsAuthenticated(false);
     setUserProfile(null);
     localStorage.removeItem(CURRENT_USER_KEY);
+    sessionStorage.removeItem(CURRENT_USER_KEY);
     // Clear profile draft on logout
     localStorage.removeItem('admin_profile_draft');
     router.push('/login');
@@ -126,7 +136,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const updateProfile = useCallback((newProfileData: Omit<UserProfile, 'password'>) => {
     setUserProfile(newProfileData);
-    localStorage.setItem(CURRENT_USER_KEY, JSON.stringify(newProfileData));
+    
+    // Update the correct storage
+    const rememberMe = localStorage.getItem(CURRENT_USER_KEY) !== null;
+    const storage = rememberMe ? localStorage : sessionStorage;
+    storage.setItem(CURRENT_USER_KEY, JSON.stringify(newProfileData));
+
 
     // Also update the user in the all_users list
     const allUsersRaw = localStorage.getItem(ALL_USERS_KEY);

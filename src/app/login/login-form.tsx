@@ -9,6 +9,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useState, FormEvent, useEffect } from 'react';
 import { useToast } from '@/hooks/use-toast';
+import { Checkbox } from '@/components/ui/checkbox';
 
 const GoogleIcon = () => (
   <svg className="h-5 w-5" viewBox="0 0 24 24">
@@ -34,6 +35,7 @@ export function LoginForm() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
+  const [rememberMe, setRememberMe] = useState(true);
   const { login } = useAuth();
   const router = useRouter();
   const { toast } = useToast();
@@ -65,7 +67,7 @@ export function LoginForm() {
 
   const handleSubmit = (event: FormEvent) => {
     event.preventDefault();
-    const success = login(email, password);
+    const success = login(email, password, rememberMe);
     if (success) {
       router.push('/');
     } else {
@@ -149,13 +151,24 @@ export function LoginForm() {
           </button>
         </div>
 
-        <div className="text-right text-sm">
-          <Link
-            href="#"
-            className="font-medium text-orange-600 hover:text-orange-500"
-          >
-            Forgot password?
-          </Link>
+        <div className="flex items-center justify-between">
+          <div className="flex items-center space-x-2">
+            <Checkbox id="remember-me" checked={rememberMe} onCheckedChange={(checked) => setRememberMe(checked as boolean)} />
+            <Label
+              htmlFor="remember-me"
+              className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+            >
+              Remember me
+            </Label>
+          </div>
+          <div className="text-sm">
+            <Link
+              href="#"
+              className="font-medium text-orange-600 hover:text-orange-500"
+            >
+              Forgot password?
+            </Link>
+          </div>
         </div>
 
         <div>
