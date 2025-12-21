@@ -19,12 +19,8 @@ export default function ContinueWatching() {
     <div>
       <div className="flex justify-between items-center mb-4">
         <h2 className="text-2xl font-bold">Continue Watching</h2>
-        <div className="flex gap-2">
-           <CarouselPrevious className="relative -left-0 top-0 translate-y-0" />
-           <CarouselNext className="relative -right-0 top-0 translate-y-0" />
-        </div>
       </div>
-      <Carousel opts={{ align: 'start', loop: true }} className="w-full">
+      <Carousel opts={{ align: 'start', loop: true }} className="w-full relative">
         <CarouselContent>
           {placeholderCourses.map((course) => (
             <CarouselItem key={course.id} className="md:basis-1/2 lg:basis-1/2">
@@ -64,6 +60,10 @@ export default function ContinueWatching() {
             </CarouselItem>
           ))}
         </CarouselContent>
+        <div className="absolute -top-12 right-0 flex gap-2">
+            <CarouselPrevious className="relative -left-0 top-0 translate-y-0" />
+            <CarouselNext className="relative -right-0 top-0 translate-y-0" />
+        </div>
       </Carousel>
     </div>
   );
