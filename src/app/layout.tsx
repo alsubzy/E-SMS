@@ -4,7 +4,6 @@ import { Sidebar, SidebarInset, SidebarProvider } from '@/components/ui/sidebar'
 import Nav from '@/components/nav';
 import Header from '@/components/header';
 import { Toaster } from '@/components/ui/toaster';
-import { useToast } from '@/hooks/use-toast';
 
 export const metadata: Metadata = {
   title: 'ia Academy',

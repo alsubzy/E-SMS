@@ -1,3 +1,5 @@
+'use client';
+
 import {
   Bell,
   ChevronDown,
@@ -16,7 +18,6 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { SidebarTrigger } from '@/components/ui/sidebar';
-import Link from 'next/link';
 
 export default function Header() {
   return (
