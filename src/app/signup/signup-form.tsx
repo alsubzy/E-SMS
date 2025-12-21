@@ -98,7 +98,7 @@ export function SignupForm() {
               ></path>
             </svg>
           </div>
-          <h1 className="text-2xl font-bold text-gray-800">E Spurt</h1>
+          <h1 className="text-2xl font-bold text-gray-800">E-School MS</h1>
         </div>
         <h2 className="text-2xl font-bold tracking-tight text-gray-900">
           Create an Account

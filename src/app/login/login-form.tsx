@@ -35,6 +35,7 @@ export function LoginForm() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
+  const [rememberMe, setRememberMe] = useState(true);
   const { login } = useAuth();
   const router = useRouter();
   const { toast } = useToast();
@@ -68,7 +69,7 @@ export function LoginForm() {
 
   const handleSubmit = (event: FormEvent) => {
     event.preventDefault();
-    const success = login(email, password);
+    const success = login(email, password, rememberMe);
     if (success) {
       router.push('/');
     } else {
@@ -100,7 +101,7 @@ export function LoginForm() {
               ></path>
             </svg>
           </div>
-          <h1 className="text-2xl font-bold text-gray-800">E Spurt</h1>
+          <h1 className="text-2xl font-bold text-gray-800">E-School MS</h1>
         </div>
         <h2 className="text-2xl font-bold tracking-tight text-gray-900">
           Welcome Back
@@ -152,7 +153,13 @@ export function LoginForm() {
           </button>
         </div>
 
-        <div className="flex items-center justify-end">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center">
+            <Checkbox id="remember-me" checked={rememberMe} onCheckedChange={(checked) => setRememberMe(checked as boolean)} />
+            <Label htmlFor="remember-me" className="ml-2 block text-sm text-gray-900">
+              Remember me
+            </Label>
+          </div>
           <div className="text-sm">
             <Link
               href="#"
