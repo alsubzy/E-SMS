@@ -1,11 +1,6 @@
 'use client';
 
-import {
-  Bell,
-  ChevronDown,
-  Search,
-  MessageCircle,
-} from 'lucide-react';
+import { Bell, ChevronDown, Search, MessageCircle } from 'lucide-react';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -18,14 +13,24 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { SidebarTrigger } from '@/components/ui/sidebar';
+import { useAuth } from '@/context/AuthContext';
+import { useRouter } from 'next/navigation';
 
 export default function Header() {
+  const { logout } = useAuth();
+  const router = useRouter();
+
+  const handleLogout = () => {
+    logout();
+    router.push('/login');
+  };
+
   return (
     <header className="sticky top-0 z-10 flex h-16 items-center gap-4 border-b bg-background px-4 md:px-8">
       <div className="flex items-center gap-4">
-         <SidebarTrigger className="md:hidden" />
+        <SidebarTrigger className="md:hidden" />
       </div>
-      
+
       <div className="flex w-full items-center gap-4 md:ml-auto md:gap-2 lg:gap-4">
         <form className="ml-auto flex-1 sm:flex-initial">
           <div className="relative">
@@ -72,7 +77,7 @@ export default function Header() {
             <DropdownMenuItem>Profile</DropdownMenuItem>
             <DropdownMenuItem>Settings</DropdownMenuItem>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>Logout</DropdownMenuItem>
+            <DropdownMenuItem onClick={handleLogout}>Logout</DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
       </div>

@@ -3,10 +3,11 @@
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { useAuth } from '@/context/AuthContext';
 import { Eye, EyeOff } from 'lucide-react';
-import Image from 'next/image';
 import Link from 'next/link';
-import { useState } from 'react';
+import { useRouter } from 'next/navigation';
+import { useState, FormEvent } from 'react';
 
 const GoogleIcon = () => (
   <svg className="h-5 w-5" viewBox="0 0 24 24">
@@ -28,6 +29,15 @@ const FacebookIcon = () => (
 
 export function LoginForm() {
   const [showPassword, setShowPassword] = useState(false);
+  const { login } = useAuth();
+  const router = useRouter();
+
+  const handleSubmit = (event: FormEvent) => {
+    event.preventDefault();
+    login();
+    router.push('/');
+  };
+
   return (
     <div className="flex w-full max-w-sm flex-col items-center justify-center space-y-6">
       <div className="text-center">
@@ -58,7 +68,7 @@ export function LoginForm() {
         </p>
       </div>
 
-      <form className="w-full space-y-4">
+      <form className="w-full space-y-4" onSubmit={handleSubmit}>
         <div>
           <Label htmlFor="email">Email address</Label>
           <Input
@@ -69,6 +79,7 @@ export function LoginForm() {
             required
             className="mt-1 bg-gray-50"
             placeholder="Email address"
+            defaultValue="admin@example.com"
           />
         </div>
 
@@ -82,6 +93,7 @@ export function LoginForm() {
             required
             className="mt-1 bg-gray-50"
             placeholder="Password"
+            defaultValue="password"
           />
           <button
             type="button"
