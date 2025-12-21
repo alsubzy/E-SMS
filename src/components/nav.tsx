@@ -73,7 +73,7 @@ import {
   LogOut,
 } from 'lucide-react';
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import { useState } from 'react';
 
 const menuItems = [
@@ -332,6 +332,7 @@ const AppLogo = () => (
 
 export default function Nav() {
   const pathname = usePathname();
+  const router = useRouter();
   const [openMenu, setOpenMenu] = useState<string | null>(null);
 
   function isActive(path: string) {
@@ -339,9 +340,21 @@ export default function Nav() {
     return pathname.startsWith(path);
   }
 
-  const handleMenuClick = (label: string) => {
-    setOpenMenu(openMenu === label ? null : label);
+  const handleMenuClick = (label: string, href: string) => {
+    if (openMenu === label) {
+      setOpenMenu(null);
+    } else {
+      setOpenMenu(label);
+    }
+    // Only navigate if it's a top-level item with a real href
+    if (href !== '/#') {
+        // router.push(href);
+    }
   };
+  
+  const handleSubMenuClick = (href: string) => {
+      router.push(href);
+  }
 
   return (
     <>
@@ -359,17 +372,14 @@ export default function Nav() {
           {menuItems.map((item) => (
             <SidebarMenuItem key={item.label}>
               <SidebarMenuButton
-                asChild
                 isActive={isActive(item.href) && !item.submenu}
-                onClick={() => handleMenuClick(item.label)}
+                onClick={() => handleMenuClick(item.label, item.href)}
                 className="justify-between"
               >
-                <Link href={item.href}>
-                  <div>
+                  <div className='flex items-center gap-3'>
                     <item.icon className="h-5 w-5" />
                     <span className="font-medium">{item.label}</span>
                   </div>
-                </Link>
               </SidebarMenuButton>
               {item.submenu && openMenu === item.label && (
                 <SidebarMenuSub>
