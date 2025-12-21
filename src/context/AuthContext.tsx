@@ -1,3 +1,4 @@
+
 'use client';
 
 import React, {
@@ -120,6 +121,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       allUsers.push(newProfile);
       localStorage.setItem(ALL_USERS_KEY, JSON.stringify(allUsers));
       
+      // Auto-login the user after signup
+      const { password, ...profileToStore } = newProfile;
+      setUserProfile(profileToStore);
+      setIsAuthenticated(true);
+      localStorage.setItem(CURRENT_USER_EMAIL_KEY, profileToStore.email);
+
       return { success: true, message: 'Signup successful!' };
     } catch (error) {
       console.error("Failed during signup process", error);

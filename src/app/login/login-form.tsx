@@ -1,3 +1,4 @@
+
 'use client';
 
 import { Button } from '@/components/ui/button';
@@ -11,14 +12,18 @@ import { useState, FormEvent, useEffect } from 'react';
 import { useToast } from '@/hooks/use-toast';
 import { Checkbox } from '@/components/ui/checkbox';
 
-const SelloraIcon = () => (
-    <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M16 32C24.8366 32 32 24.8366 32 16C32 7.16344 24.8366 0 16 0C7.16344 0 0 7.16344 0 16C0 24.8366 7.16344 32 16 32Z" fill="#4A4DE6"/>
-        <path d="M12.2843 12.7428L15.9928 9.03429L19.7014 12.7428L15.9928 16.4514L12.2843 12.7428Z" fill="white"/>
-        <path d="M9.03429 15.9928L12.7428 19.7014L15.9928 16.4514L19.7014 19.7014L16.4514 22.9514L12.7428 BORDER_CONVERTED_TO_FILL" fill="white"/>
-        <path d="M19.7014 9.03429L22.9514 12.2843L19.2428 15.9928L15.9928 12.7428L19.7014 9.03429Z" fill="white"/>
-    </svg>
-);
+const iaAcademyLogo = () => (
+    <svg width="36" height="36" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M18 0C27.9411 0 36 8.05887 36 18C36 27.9411 27.9411 36 18 36C8.05887 36 0 27.9411 0 18C0 8.05887 8.05887 0 18 0Z" fill="url(#paint0_linear_login)"/>
+    <path d="M12.4939 24.3438V11.6562H15.0139V17.0362L19.9889 11.6562H22.9939L17.5189 17.5037L23.2339 24.3438H20.1389L16.2919 19.3337L15.0139 20.6812V24.3438H12.4939Z" fill="white"/>
+    <defs>
+    <linearGradient id="paint0_linear_login" x1="18" y1="0" x2="18" y2="36" gradientUnits="userSpaceOnUse">
+    <stop stopColor="#A020F0"/>
+    <stop offset="1" stopColor="#C040F0"/>
+    </linearGradient>
+    </defs>
+    </svg>   
+)
 
 
 const GoogleIcon = () => (
@@ -43,7 +48,6 @@ export function LoginForm() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
-  const [rememberMe, setRememberMe] = useState(true);
   const { login } = useAuth();
   const router = useRouter();
   const { toast } = useToast();
@@ -64,11 +68,6 @@ export function LoginForm() {
             localStorage.removeItem(LAST_REGISTERED_USER_KEY);
         }
       }
-      else {
-        // Default credentials if no one has just registered
-        setEmail('sellostore@company.com');
-        setPassword('5ellostore.');
-      }
     } catch (error) {
       console.error("Failed to parse last registered user from localStorage", error);
     }
@@ -77,7 +76,7 @@ export function LoginForm() {
 
   const handleSubmit = (event: FormEvent) => {
     event.preventDefault();
-    const success = login(email, password, rememberMe);
+    const success = login(email, password);
     if (success) {
       router.push('/');
     } else {
@@ -90,21 +89,14 @@ export function LoginForm() {
   };
 
   return (
-    <div className="flex w-full max-w-md flex-col justify-center space-y-6">
-       <div className="mb-8 flex items-center gap-3">
-          <SelloraIcon/>
-          <h1 className="text-2xl font-bold text-gray-800">Sellora</h1>
+    <div className="w-full max-w-sm space-y-6">
+       <div className="flex flex-col items-center text-center">
+          <div className='mb-4'>{iaAcademyLogo()}</div>
+          <h1 className="text-2xl font-bold text-foreground">ia Academy</h1>
+          <p className="text-sm text-muted-foreground">Welcome back! Please enter your details.</p>
        </div>
-      <div className="text-left">
-        <h2 className="text-3xl font-bold tracking-tight text-gray-900">
-          Welcome Back
-        </h2>
-        <p className="mt-2 text-sm text-gray-600">
-          Enter your email and password to access your account.
-        </p>
-      </div>
-
-      <form className="w-full space-y-4" onSubmit={handleSubmit}>
+    
+      <form className="space-y-4" onSubmit={handleSubmit}>
         <div>
           <Label htmlFor="email">Email</Label>
           <Input
@@ -114,7 +106,7 @@ export function LoginForm() {
             autoComplete="email"
             required
             className="mt-1"
-            placeholder="sellostore@company.com"
+            placeholder="admin@example.com"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
           />
@@ -129,7 +121,7 @@ export function LoginForm() {
             autoComplete="current-password"
             required
             className="mt-1"
-            placeholder="5ellostore."
+            placeholder="Enter your password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           />
@@ -137,6 +129,7 @@ export function LoginForm() {
             type="button"
             onClick={() => setShowPassword(!showPassword)}
             className="absolute right-3 top-[2.2rem] text-gray-400"
+            aria-label={showPassword ? 'Hide password' : 'Show password'}
           >
             {showPassword ? (
               <EyeOff className="h-5 w-5" />
@@ -148,17 +141,14 @@ export function LoginForm() {
 
         <div className="flex items-center justify-between">
           <div className="flex items-center">
-            <Checkbox id="remember-me" checked={rememberMe} onCheckedChange={(checked) => setRememberMe(checked as boolean)} />
-            <Label htmlFor="remember-me" className="ml-2 block text-sm text-gray-700">
-              Remember Me
-            </Label>
+             {/* Remember me checkbox removed as per new logic */}
           </div>
           <div className="text-sm">
             <Link
               href="#"
               className="font-medium text-primary hover:underline"
             >
-              Forgot Your Password?
+              Forgot Password?
             </Link>
           </div>
         </div>
@@ -173,16 +163,16 @@ export function LoginForm() {
         </div>
       </form>
 
-      <div className="relative w-full">
+      <div className="relative">
         <div className="absolute inset-0 flex items-center">
-          <span className="w-full border-t border-gray-300" />
+          <span className="w-full border-t" />
         </div>
         <div className="relative flex justify-center text-sm">
-          <span className="bg-white px-2 text-gray-500">Or Login With</span>
+          <span className="bg-background px-2 text-muted-foreground">OR</span>
         </div>
       </div>
 
-      <div className="grid w-full grid-cols-2 gap-4">
+      <div className="grid w-full grid-cols-1 gap-4 sm:grid-cols-2">
         <Button variant="outline" className="w-full">
           <GoogleIcon />
           <span className="ml-2">Google</span>
@@ -192,13 +182,13 @@ export function LoginForm() {
           <span className="ml-2">Apple</span>
         </Button>
       </div>
-      <p className="text-center text-sm text-gray-600">
-        Don&apos;t Have An Account?{' '}
+      <p className="text-center text-sm text-muted-foreground">
+        Don&apos;t have an account?{' '}
         <Link
           href="/signup"
           className="font-medium text-primary hover:underline"
         >
-          Register Now.
+          Sign Up
         </Link>
       </p>
     </div>

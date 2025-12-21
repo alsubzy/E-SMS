@@ -1,3 +1,4 @@
+
 'use client';
 
 import { Button } from '@/components/ui/button';
@@ -12,6 +13,19 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { useToast } from '@/hooks/use-toast';
 
 const LAST_REGISTERED_USER_KEY = 'last_registered_user';
+
+const iaAcademyLogo = () => (
+    <svg width="36" height="36" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M18 0C27.9411 0 36 8.05887 36 18C36 27.9411 27.9411 36 18 36C8.05887 36 0 27.9411 0 18C0 8.05887 8.05887 0 18 0Z" fill="url(#paint0_linear_signup)"/>
+    <path d="M12.4939 24.3438V11.6562H15.0139V17.0362L19.9889 11.6562H22.9939L17.5189 17.5037L23.2339 24.3438H20.1389L16.2919 19.3337L15.0139 20.6812V24.3438H12.4939Z" fill="white"/>
+    <defs>
+    <linearGradient id="paint0_linear_signup" x1="18" y1="0" x2="18" y2="36" gradientUnits="userSpaceOnUse">
+    <stop stopColor="#A020F0"/>
+    <stop offset="1" stopColor="#C040F0"/>
+    </linearGradient>
+    </defs>
+    </svg>   
+)
 
 export function SignupForm() {
   const [showPassword, setShowPassword] = useState(false);
@@ -62,13 +76,11 @@ export function SignupForm() {
     const result = signup(newProfile);
     
     if (result.success) {
-      // Store credentials for login page pre-fill
-      try {
-        localStorage.setItem(LAST_REGISTERED_USER_KEY, JSON.stringify({ email: newProfile.email, password: newProfile.password }));
-      } catch (error) {
-        console.error("Failed to save last registered user to localStorage", error);
-      }
-      router.push('/login');
+      toast({
+        title: 'Account Created!',
+        description: "You've been logged in successfully.",
+      });
+      router.push('/');
     } else {
       toast({
         variant: 'destructive',
@@ -79,33 +91,11 @@ export function SignupForm() {
   };
 
   return (
-    <div className="flex w-full max-w-sm flex-col items-center justify-center space-y-6">
-      <div className="text-center">
-        <div className="mb-4 flex items-center justify-center">
-          <div className="mr-3 flex h-10 w-10 items-center justify-center rounded-lg bg-orange-500 text-white">
-            <svg
-              className="h-6 w-6"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="2"
-                d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"
-              ></path>
-            </svg>
-          </div>
-          <h1 className="text-2xl font-bold text-gray-800">E-School MS</h1>
-        </div>
-        <h2 className="text-2xl font-bold tracking-tight text-gray-900">
-          Create an Account
-        </h2>
-        <p className="mt-2 text-sm text-gray-600">
-          Join us to get started
-        </p>
+    <div className="w-full max-w-sm space-y-6">
+      <div className="flex flex-col items-center text-center">
+        <div className='mb-4'>{iaAcademyLogo()}</div>
+        <h1 className="text-2xl font-bold text-foreground">Create an Account</h1>
+        <p className="text-sm text-muted-foreground">Get started with your new account.</p>
       </div>
 
       <form className="w-full space-y-4" onSubmit={handleSubmit}>
@@ -122,15 +112,15 @@ export function SignupForm() {
 
         <div>
           <Label htmlFor="fullName">Full Name</Label>
-          <Input id="fullName" value={fullName} onChange={(e) => setFullName(e.target.value)} required className="mt-1 bg-gray-50" />
+          <Input id="fullName" value={fullName} onChange={(e) => setFullName(e.target.value)} required className="mt-1" />
         </div>
         <div>
           <Label htmlFor="username">Username</Label>
-          <Input id="username" value={username} onChange={(e) => setUsername(e.target.value)} required className="mt-1 bg-gray-50" />
+          <Input id="username" value={username} onChange={(e) => setUsername(e.target.value)} required className="mt-1" />
         </div>
         <div>
           <Label htmlFor="email">Email address</Label>
-          <Input id="email" type="email" value={email} onChange={(e) => setEmail(e.target.value)} required className="mt-1 bg-gray-50" />
+          <Input id="email" type="email" value={email} onChange={(e) => setEmail(e.target.value)} required className="mt-1" />
         </div>
         <div className="relative">
           <Label htmlFor="password">Password</Label>
@@ -140,27 +130,28 @@ export function SignupForm() {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
-            className="mt-1 bg-gray-50"
+            className="mt-1"
             placeholder="6+ characters"
           />
           <button
             type="button"
             onClick={() => setShowPassword(!showPassword)}
             className="absolute right-3 top-[2.2rem] text-gray-400"
+            aria-label={showPassword ? 'Hide password' : 'Show password'}
           >
             {showPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
           </button>
         </div>
 
         <div>
-          <Button type="submit" className="w-full bg-orange-500 text-white hover:bg-orange-600">
+          <Button type="submit" className="w-full bg-primary text-white hover:bg-primary/90">
             Create Account
           </Button>
         </div>
       </form>
-      <p className="text-center text-sm text-gray-600">
+      <p className="text-center text-sm text-muted-foreground">
         Already have an account?{' '}
-        <Link href="/login" className="font-medium text-orange-600 hover:text-orange-500">
+        <Link href="/login" className="font-medium text-primary hover:underline">
           Login
         </Link>
       </p>

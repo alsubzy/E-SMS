@@ -1,3 +1,4 @@
+
 'use client';
 
 import { useAuth } from '@/context/AuthContext';
@@ -24,26 +25,26 @@ export function AuthGuard({ children }: { children: ReactNode }) {
 
   if (isLoading) {
     // You can show a global loading spinner here
-    return <div>Loading...</div>;
+    return <div className="flex h-screen items-center justify-center">Loading...</div>;
   }
   
   const isAuthPage = pathname === '/login' || pathname === '/signup';
 
   // If not authenticated and not on an auth page, router will redirect, so we can return null or a loader.
   if (!isAuthenticated && !isAuthPage) {
-      return null;
+      return <div className="flex h-screen items-center justify-center">Loading...</div>;
   }
 
   // If authenticated and on an auth page, router will redirect, so we can return null or a loader.
   if(isAuthenticated && isAuthPage) {
-      return null;
+       return <div className="flex h-screen items-center justify-center">Loading...</div>;
   }
 
   // If on an auth page, just render the children without the main layout
   if(isAuthPage){
-    return <main className="bg-gray-100">{children}</main>
+    return <>{children}</>
   }
   
-  // If authenticated and not on the login page, render the main layout
+  // If authenticated and not on an auth page, render the main layout
   return <ClientLayout>{children}</ClientLayout>;
 }
