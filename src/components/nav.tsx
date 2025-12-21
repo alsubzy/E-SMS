@@ -25,13 +25,15 @@ import {
   User,
   Library,
   Settings,
+  LayoutDashboard,
 } from 'lucide-react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useState } from 'react';
 
 const menuItems = [
-  { href: '/home', label: 'Home', icon: Home, subItems: [{href: "/admin", label: "Admin"}, {href: "/students-main", label: "Students"}, {href: "/teachers-main", label: "Teachers"}]},
+  { href: '/', label: 'Dashboard', icon: LayoutDashboard },
+  { href: '/admin', label: 'Admin', icon: User },
   { href: '/students', label: 'Students', icon: Users },
   { href: '/teachers', label: 'Teachers', icon: User },
   { href: '/library', label: 'Library', icon: Library },
