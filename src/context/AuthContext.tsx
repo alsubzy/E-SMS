@@ -10,21 +10,23 @@ import React, {
 } from 'react';
 import { useRouter } from 'next/navigation';
 
-type UserProfile = {
+export type UserProfile = {
   fullName: string;
   username: string;
   email: string;
   phone: string;
   bio: string;
   avatarUrl: string;
+  password?: string; // Only for registration, not stored long-term
 };
 
 interface AuthContextType {
   isAuthenticated: boolean;
   isLoading: boolean;
   userProfile: UserProfile | null;
-  login: () => void;
+  login: (email: string, pass: string) => boolean;
   logout: () => void;
+  signup: (newProfile: UserProfile) => { success: boolean; message: string };
   updateProfile: (newProfile: UserProfile) => void;
 }
 
@@ -37,9 +39,11 @@ const defaultProfile: UserProfile = {
   phone: '',
   bio: '',
   avatarUrl: 'https://picsum.photos/seed/avatar2/100/100',
+  password: 'password'
 };
 
-const PROFILE_KEY = 'user_profile';
+const ALL_USERS_KEY = 'all_users';
+const CURRENT_USER_KEY = 'current_user';
 
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
@@ -49,15 +53,17 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     try {
-      const storedAuth = localStorage.getItem('isAuthenticated');
-      const storedProfile = localStorage.getItem(PROFILE_KEY);
+      // Initialize with a default admin user if no users exist
+      const allUsersRaw = localStorage.getItem(ALL_USERS_KEY);
+      if (!allUsersRaw) {
+        localStorage.setItem(ALL_USERS_KEY, JSON.stringify([defaultProfile]));
+      }
 
-      if (storedAuth) {
-        const authStatus = JSON.parse(storedAuth);
-        setIsAuthenticated(authStatus);
-        if (authStatus) {
-          setUserProfile(storedProfile ? JSON.parse(storedProfile) : defaultProfile);
-        }
+      const currentUser = localStorage.getItem(CURRENT_USER_KEY);
+      if (currentUser) {
+        const profile = JSON.parse(currentUser);
+        setUserProfile(profile);
+        setIsAuthenticated(true);
       }
     } catch (error) {
       console.error("Failed to parse data from localStorage", error);
@@ -66,32 +72,76 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     }
   }, []);
 
-  const login = () => {
-    const profile = defaultProfile;
+  const login = (email: string, pass: string) => {
+    const allUsersRaw = localStorage.getItem(ALL_USERS_KEY);
+    const allUsers: UserProfile[] = allUsersRaw ? JSON.parse(allUsersRaw) : [];
+    
+    const foundUser = allUsers.find(
+      (user) => user.email === email && user.password === pass
+    );
+
+    if (foundUser) {
+      const { password, ...profileToStore } = foundUser;
+      setUserProfile(profileToStore);
+      setIsAuthenticated(true);
+      localStorage.setItem(CURRENT_USER_KEY, JSON.stringify(profileToStore));
+      router.push('/');
+      return true;
+    }
+    return false;
+  };
+  
+  const signup = (newProfile: UserProfile) => {
+    const allUsersRaw = localStorage.getItem(ALL_USERS_KEY);
+    const allUsers: UserProfile[] = allUsersRaw ? JSON.parse(allUsersRaw) : [];
+
+    const existingUser = allUsers.find(
+      (user) => user.email === newProfile.email || user.username === newProfile.username
+    );
+
+    if (existingUser) {
+      return { success: false, message: 'An account with this email or username already exists.' };
+    }
+
+    allUsers.push(newProfile);
+    localStorage.setItem(ALL_USERS_KEY, JSON.stringify(allUsers));
+    
+    const { password, ...profileToStore } = newProfile;
+    setUserProfile(profileToStore);
     setIsAuthenticated(true);
-    setUserProfile(profile);
-    localStorage.setItem('isAuthenticated', 'true');
-    localStorage.setItem(PROFILE_KEY, JSON.stringify(profile));
+    localStorage.setItem(CURRENT_USER_KEY, JSON.stringify(profileToStore));
     router.push('/');
+    return { success: true, message: 'Signup successful!' };
   };
 
   const logout = () => {
     setIsAuthenticated(false);
     setUserProfile(null);
-    localStorage.removeItem('isAuthenticated');
-    localStorage.removeItem(PROFILE_KEY);
+    localStorage.removeItem(CURRENT_USER_KEY);
     // Clear profile draft on logout
     localStorage.removeItem('admin_profile_draft');
     router.push('/login');
   };
 
-  const updateProfile = useCallback((newProfile: UserProfile) => {
-    setUserProfile(newProfile);
-    localStorage.setItem(PROFILE_KEY, JSON.stringify(newProfile));
+  const updateProfile = useCallback((newProfileData: Omit<UserProfile, 'password'>) => {
+    setUserProfile(newProfileData);
+    localStorage.setItem(CURRENT_USER_KEY, JSON.stringify(newProfileData));
+
+    // Also update the user in the all_users list
+    const allUsersRaw = localStorage.getItem(ALL_USERS_KEY);
+    let allUsers: UserProfile[] = allUsersRaw ? JSON.parse(allUsersRaw) : [];
+    const userIndex = allUsers.findIndex(u => u.email === newProfileData.email);
+
+    if (userIndex !== -1) {
+      // Preserve original password when updating
+      const originalPassword = allUsers[userIndex].password;
+      allUsers[userIndex] = { ...newProfileData, password: originalPassword };
+      localStorage.setItem(ALL_USERS_KEY, JSON.stringify(allUsers));
+    }
   }, []);
 
   return (
-    <AuthContext.Provider value={{ isAuthenticated, isLoading, userProfile, login, logout, updateProfile }}>
+    <AuthContext.Provider value={{ isAuthenticated, isLoading, userProfile, login, logout, signup, updateProfile }}>
       {children}
     </AuthContext.Provider>
   );

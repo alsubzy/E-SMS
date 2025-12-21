@@ -8,6 +8,7 @@ import { Eye, EyeOff } from 'lucide-react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useState, FormEvent } from 'react';
+import { useToast } from '@/hooks/use-toast';
 
 const GoogleIcon = () => (
   <svg className="h-5 w-5" viewBox="0 0 24 24">
@@ -28,14 +29,25 @@ const FacebookIcon = () => (
 );
 
 export function LoginForm() {
+  const [email, setEmail] = useState('admin@example.com');
+  const [password, setPassword] = useState('password');
   const [showPassword, setShowPassword] = useState(false);
   const { login } = useAuth();
   const router = useRouter();
+  const { toast } = useToast();
 
   const handleSubmit = (event: FormEvent) => {
     event.preventDefault();
-    login();
-    router.push('/');
+    const success = login(email, password);
+    if (success) {
+      router.push('/');
+    } else {
+      toast({
+        variant: 'destructive',
+        title: 'Login Failed',
+        description: 'Invalid email or password.',
+      });
+    }
   };
 
   return (
@@ -79,7 +91,8 @@ export function LoginForm() {
             required
             className="mt-1 bg-gray-50"
             placeholder="Email address"
-            defaultValue="admin@example.com"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
           />
         </div>
 
@@ -93,7 +106,8 @@ export function LoginForm() {
             required
             className="mt-1 bg-gray-50"
             placeholder="Password"
-            defaultValue="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
           />
           <button
             type="button"
@@ -149,7 +163,7 @@ export function LoginForm() {
       <p className="text-center text-sm text-gray-600">
         Don&apos;t have an account?{' '}
         <Link
-          href="#"
+          href="/signup"
           className="font-medium text-orange-600 hover:text-orange-500"
         >
           Signup
