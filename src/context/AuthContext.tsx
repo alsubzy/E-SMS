@@ -43,7 +43,7 @@ const defaultProfile: UserProfile = {
 };
 
 const ALL_USERS_KEY = 'all_users';
-const CURRENT_USER_KEY = 'current_user_email';
+const CURRENT_USER_EMAIL_KEY = 'current_user_email';
 
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
@@ -52,9 +52,14 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const router = useRouter();
 
   const loadUserByEmail = (email: string) => {
-    const allUsersRaw = localStorage.getItem(ALL_USERS_KEY);
-    const allUsers: UserProfile[] = allUsersRaw ? JSON.parse(allUsersRaw) : [];
-    return allUsers.find(user => user.email === email) || null;
+    try {
+      const allUsersRaw = localStorage.getItem(ALL_USERS_KEY);
+      const allUsers: UserProfile[] = allUsersRaw ? JSON.parse(allUsersRaw) : [];
+      return allUsers.find(user => user.email === email) || null;
+    } catch (error) {
+      console.error("Failed to parse all_users from localStorage", error);
+      return null;
+    }
   };
 
   useEffect(() => {
@@ -64,7 +69,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         localStorage.setItem(ALL_USERS_KEY, JSON.stringify([defaultProfile]));
       }
 
-      const currentUserEmail = localStorage.getItem(CURRENT_USER_KEY);
+      const currentUserEmail = localStorage.getItem(CURRENT_USER_EMAIL_KEY);
       if (currentUserEmail) {
         const profile = loadUserByEmail(currentUserEmail);
         if (profile) {
@@ -74,7 +79,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         }
       }
     } catch (error) {
-      console.error("Failed to parse data from storage", error);
+      console.error("Failed to initialize auth state from localStorage", error);
     } finally {
       setIsLoading(false);
     }
@@ -92,7 +97,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       const { password, ...profileToStore } = foundUser;
       setUserProfile(profileToStore);
       setIsAuthenticated(true);
-      localStorage.setItem(CURRENT_USER_KEY, profileToStore.email);
+      localStorage.setItem(CURRENT_USER_EMAIL_KEY, profileToStore.email);
       router.push('/');
       return true;
     }
@@ -100,55 +105,58 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   };
   
   const signup = (newProfile: UserProfile) => {
-    const allUsersRaw = localStorage.getItem(ALL_USERS_KEY);
-    const allUsers: UserProfile[] = allUsersRaw ? JSON.parse(allUsersRaw) : [defaultProfile];
+    try {
+      const allUsersRaw = localStorage.getItem(ALL_USERS_KEY);
+      const allUsers: UserProfile[] = allUsersRaw ? JSON.parse(allUsersRaw) : [defaultProfile];
 
-    const existingUser = allUsers.find(
-      (user) => user.email === newProfile.email || user.username === newProfile.username
-    );
+      const existingUser = allUsers.find(
+        (user) => user.email === newProfile.email || user.username === newProfile.username
+      );
 
-    if (existingUser) {
-      return { success: false, message: 'An account with this email or username already exists.' };
+      if (existingUser) {
+        return { success: false, message: 'An account with this email or username already exists.' };
+      }
+
+      allUsers.push(newProfile);
+      localStorage.setItem(ALL_USERS_KEY, JSON.stringify(allUsers));
+      
+      return { success: true, message: 'Signup successful!' };
+    } catch (error) {
+      console.error("Failed during signup process", error);
+      return { success: false, message: 'An unexpected error occurred during signup.' };
     }
-
-    allUsers.push(newProfile);
-    localStorage.setItem(ALL_USERS_KEY, JSON.stringify(allUsers));
-    
-    // Auto-login after signup
-    const { password, ...profileToStore } = newProfile;
-    setUserProfile(profileToStore);
-    setIsAuthenticated(true);
-    localStorage.setItem(CURRENT_USER_KEY, profileToStore.email);
-    
-    return { success: true, message: 'Signup successful and logged in!' };
   };
 
   const logout = () => {
     setIsAuthenticated(false);
     setUserProfile(null);
-    localStorage.removeItem(CURRENT_USER_KEY);
+    localStorage.removeItem(CURRENT_USER_EMAIL_KEY);
     localStorage.removeItem('admin_profile_draft');
     router.push('/login');
   };
 
   const updateProfile = useCallback((newProfileData: Omit<UserProfile, 'password'>) => {
-    const allUsersRaw = localStorage.getItem(ALL_USERS_KEY);
-    let allUsers: UserProfile[] = allUsersRaw ? JSON.parse(allUsersRaw) : [];
-    const userIndex = allUsers.findIndex(u => u.email === newProfileData.email);
+    try {
+      const allUsersRaw = localStorage.getItem(ALL_USERS_KEY);
+      let allUsers: UserProfile[] = allUsersRaw ? JSON.parse(allUsersRaw) : [];
+      const userIndex = allUsers.findIndex(u => u.email === newProfileData.email);
 
-    if (userIndex !== -1) {
-      const originalPassword = allUsers[userIndex].password;
-      const updatedUser = { ...allUsers[userIndex], ...newProfileData, password: originalPassword };
-      allUsers[userIndex] = updatedUser;
-      
-      localStorage.setItem(ALL_USERS_KEY, JSON.stringify(allUsers));
+      if (userIndex !== -1) {
+        const originalPassword = allUsers[userIndex].password;
+        const updatedUser = { ...allUsers[userIndex], ...newProfileData, password: originalPassword };
+        allUsers[userIndex] = updatedUser;
+        
+        localStorage.setItem(ALL_USERS_KEY, JSON.stringify(allUsers));
 
-      // Update the live profile state if the updated user is the current user
-      if (userProfile && userProfile.email === newProfileData.email) {
-          const { password, ...profileToStore } = updatedUser;
-          setUserProfile(profileToStore);
-          localStorage.setItem(CURRENT_USER_KEY, profileToStore.email);
+        // Update the live profile state if the updated user is the current user
+        if (userProfile && userProfile.email === newProfileData.email) {
+            const { password, ...profileToStore } = updatedUser;
+            setUserProfile(profileToStore);
+            localStorage.setItem(CURRENT_USER_EMAIL_KEY, profileToStore.email);
+        }
       }
+    } catch (error) {
+      console.error("Failed to update profile in localStorage", error);
     }
   }, [userProfile]);
 

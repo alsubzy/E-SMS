@@ -11,6 +11,8 @@ import { useState, FormEvent } from 'react';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { useToast } from '@/hooks/use-toast';
 
+const LAST_REGISTERED_USER_KEY = 'last_registered_user';
+
 export function SignupForm() {
   const [showPassword, setShowPassword] = useState(false);
   const [fullName, setFullName] = useState('');
@@ -46,7 +48,8 @@ export function SignupForm() {
       });
       return;
     }
-    const result = signup({
+    
+    const newProfile = {
       fullName,
       username,
       email,
@@ -54,14 +57,18 @@ export function SignupForm() {
       avatarUrl: avatarUrl || `https://i.pravatar.cc/150?u=${username}`,
       phone: '',
       bio: '',
-    });
+    };
+
+    const result = signup(newProfile);
     
     if (result.success) {
-      toast({
-          title: 'Signup Successful!',
-          description: 'You are now logged in.',
-      });
-      router.push('/');
+      // Store credentials for login page pre-fill
+      try {
+        localStorage.setItem(LAST_REGISTERED_USER_KEY, JSON.stringify({ email: newProfile.email, password: newProfile.password }));
+      } catch (error) {
+        console.error("Failed to save last registered user to localStorage", error);
+      }
+      router.push('/login');
     } else {
       toast({
         variant: 'destructive',
