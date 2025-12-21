@@ -15,11 +15,11 @@ import { Checkbox } from '@/components/ui/checkbox';
 const iaAcademyLogo = () => (
     <svg width="36" height="36" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
     <path d="M18 0C27.9411 0 36 8.05887 36 18C36 27.9411 27.9411 36 18 36C8.05887 36 0 27.9411 0 18C0 8.05887 8.05887 0 18 0Z" fill="url(#paint0_linear_login)"/>
-    <path d="M12.4939 24.3438V11.6562H15.0139V17.0362L19.9889 11.6562H22.9939L17.5189 17.5037L23.2339 24.3438H20.1389L16.2919 19.3337L15.0139 20.6812V24.3438H12.4939Z" fill="white"/>
+    <path d="M9.65137 25.1375L14.4164 12.3069H17.0195L13.1095 22.8463L18.4981 12.3069H20.9856L15.3537 23.3631L21.4931 25.1375H18.7745L15.5495 23.8331L12.4414 25.1375H9.65137Z" fill="white"/>
     <defs>
     <linearGradient id="paint0_linear_login" x1="18" y1="0" x2="18" y2="36" gradientUnits="userSpaceOnUse">
-    <stop stopColor="#A020F0"/>
-    <stop offset="1" stopColor="#C040F0"/>
+    <stop stopColor="#4A00E0"/>
+    <stop offset="1" stopColor="#8E2DE2"/>
     </linearGradient>
     </defs>
     </svg>   
@@ -62,7 +62,7 @@ export function LoginForm() {
             setPassword(lastRegisteredUser.password);
              toast({
                 title: 'Registration Successful',
-                description: 'Your account is created. Please log in to continue.',
+                description: 'Your credentials are saved. Please log in to continue.',
             });
              // Clean up after pre-filling
             localStorage.removeItem(LAST_REGISTERED_USER_KEY);
@@ -92,7 +92,7 @@ export function LoginForm() {
     <div className="w-full max-w-sm space-y-6">
        <div className="flex flex-col items-center text-center">
           <div className='mb-4'>{iaAcademyLogo()}</div>
-          <h1 className="text-2xl font-bold text-foreground">ia Academy</h1>
+          <h1 className="text-2xl font-bold text-foreground">E-School MS</h1>
           <p className="text-sm text-muted-foreground">Welcome back! Please enter your details.</p>
        </div>
     
@@ -194,3 +194,5 @@ export function LoginForm() {
     </div>
   );
 }
+
+    

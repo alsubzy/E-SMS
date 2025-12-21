@@ -45,6 +45,7 @@ const defaultProfile: UserProfile = {
 
 const ALL_USERS_KEY = 'all_users';
 const CURRENT_USER_EMAIL_KEY = 'current_user_email';
+const LAST_REGISTERED_USER_KEY = 'last_registered_user';
 
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
@@ -121,13 +122,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       allUsers.push(newProfile);
       localStorage.setItem(ALL_USERS_KEY, JSON.stringify(allUsers));
       
-      // Auto-login the user after signup
-      const { password, ...profileToStore } = newProfile;
-      setUserProfile(profileToStore);
-      setIsAuthenticated(true);
-      localStorage.setItem(CURRENT_USER_EMAIL_KEY, profileToStore.email);
+      // Store credentials for pre-filling login form, but don't log in
+      localStorage.setItem(LAST_REGISTERED_USER_KEY, JSON.stringify({ email: newProfile.email, password: newProfile.password }));
 
-      return { success: true, message: 'Signup successful!' };
+      return { success: true, message: 'Signup successful! Please log in.' };
     } catch (error) {
       console.error("Failed during signup process", error);
       return { success: false, message: 'An unexpected error occurred during signup.' };
@@ -181,3 +179,5 @@ export function useAuth() {
   }
   return context;
 }
+
+    

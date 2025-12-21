@@ -1,3 +1,4 @@
+
 'use client';
 
 import { Bell, ChevronDown, Search, MessageCircle, User, Settings, Lock, BellRing, History, LogOut } from 'lucide-react';
@@ -27,6 +28,7 @@ export default function Header() {
   };
 
   const getInitials = (name: string) => {
+    if (!name) return '';
     return name
       .split(' ')
       .map((n) => n[0])
@@ -115,3 +117,5 @@ export default function Header() {
     </header>
   );
 }
+
+    
