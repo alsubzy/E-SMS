@@ -1,3 +1,4 @@
+
 'use client';
 
 import {
@@ -382,7 +383,7 @@ export default function Nav() {
                         isActive={pathname === subItem.href}
                       >
                         <Link href={subItem.href}>
-                           <div className="flex items-center gap-2">
+                          <div className="flex items-center gap-2">
                             <subItem.icon className="h-4 w-4" />
                             <span>{subItem.label}</span>
                           </div>
