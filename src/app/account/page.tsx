@@ -7,10 +7,11 @@ import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { User, Trash2 } from 'lucide-react';
+import { User, Trash2, Save, X } from 'lucide-react';
+import { useToast } from '@/hooks/use-toast';
 
-const DEBOUNCE_DELAY = 500;
-const LOCAL_STORAGE_KEY = 'admin_profile';
+const SAVED_PROFILE_KEY = 'admin_profile';
+const DRAFT_PROFILE_KEY = 'admin_profile_draft';
 
 type AdminProfile = {
   fullName: string;
@@ -30,71 +31,90 @@ const defaultProfile: AdminProfile = {
   avatarUrl: 'https://picsum.photos/seed/avatar2/100/100',
 };
 
-// A simple debounce function
-function debounce<T extends (...args: any[]) => void>(func: T, delay: number) {
-  let timeout: NodeJS.Timeout;
-  return function (this: ThisParameterType<T>, ...args: Parameters<T>) {
-    clearTimeout(timeout);
-    timeout = setTimeout(() => func.apply(this, args), delay);
-  };
-}
-
 export default function AccountPage() {
-  const [profile, setProfile] = useState<AdminProfile>(defaultProfile);
+  const [savedProfile, setSavedProfile] = useState<AdminProfile>(defaultProfile);
+  const [draftProfile, setDraftProfile] = useState<AdminProfile>(defaultProfile);
   const [isClient, setIsClient] = useState(false);
+  const { toast } = useToast();
 
+  // Load data from localStorage on component mount
   useEffect(() => {
     setIsClient(true);
     try {
-      const savedProfile = localStorage.getItem(LOCAL_STORAGE_KEY);
-      if (savedProfile) {
-        setProfile(JSON.parse(savedProfile));
+      const saved = localStorage.getItem(SAVED_PROFILE_KEY);
+      const draft = localStorage.getItem(DRAFT_PROFILE_KEY);
+
+      const initialSaved = saved ? JSON.parse(saved) : defaultProfile;
+      setSavedProfile(initialSaved);
+
+      if (draft) {
+        setDraftProfile(JSON.parse(draft));
       } else {
-        // Initialize with default if nothing is saved
-        localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(defaultProfile));
+        setDraftProfile(initialSaved);
       }
     } catch (error) {
       console.error('Failed to parse profile from localStorage', error);
       // If data is corrupted, reset to default
-      localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(defaultProfile));
-      setProfile(defaultProfile);
+      localStorage.setItem(SAVED_PROFILE_KEY, JSON.stringify(defaultProfile));
+      localStorage.removeItem(DRAFT_PROFILE_KEY);
+      setSavedProfile(defaultProfile);
+      setDraftProfile(defaultProfile);
     }
   }, []);
 
-  const debouncedSave = useCallback(
-    debounce((newProfile: AdminProfile) => {
-      localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(newProfile));
-    }, DEBOUNCE_DELAY),
-    []
-  );
+  // Sync draft changes to localStorage
+  useEffect(() => {
+    if (isClient) {
+      localStorage.setItem(DRAFT_PROFILE_KEY, JSON.stringify(draftProfile));
+    }
+  }, [draftProfile, isClient]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
-    const newProfile = { ...profile, [name]: value };
-    setProfile(newProfile);
-    debouncedSave(newProfile);
+    setDraftProfile((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleResetProfile = () => {
-    localStorage.removeItem(LOCAL_STORAGE_KEY);
-    setProfile(defaultProfile);
-    // Also re-initialize it
-    localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(defaultProfile));
-  };
-  
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
       const reader = new FileReader();
       reader.onloadend = () => {
-        const newProfile = { ...profile, avatarUrl: reader.result as string };
-        setProfile(newProfile);
-        localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(newProfile));
+        setDraftProfile((prev) => ({ ...prev, avatarUrl: reader.result as string }));
       };
       reader.readAsDataURL(file);
     }
   };
 
+  const handleSaveChanges = () => {
+    // Here you would typically send data to a backend API
+    // For this example, we'll just update the "saved" state and localStorage
+    setSavedProfile(draftProfile);
+    localStorage.setItem(SAVED_PROFILE_KEY, JSON.stringify(draftProfile));
+    localStorage.removeItem(DRAFT_PROFILE_KEY); // Clear the draft
+    toast({
+        title: "Profile Saved!",
+        description: "Your changes have been successfully saved.",
+    });
+  };
+
+  const handleCancel = () => {
+    setDraftProfile(savedProfile); // Revert changes to the last saved state
+    localStorage.removeItem(DRAFT_PROFILE_KEY);
+  };
+  
+  const handleResetProfile = () => {
+    localStorage.removeItem(SAVED_PROFILE_KEY);
+    localStorage.removeItem(DRAFT_PROFILE_KEY);
+    setSavedProfile(defaultProfile);
+    setDraftProfile(defaultProfile);
+    toast({
+        title: "Profile Reset",
+        description: "Your profile has been reset to the default settings.",
+        variant: "destructive",
+    })
+  };
+
+  const hasUnsavedChanges = JSON.stringify(savedProfile) !== JSON.stringify(draftProfile);
 
   if (!isClient) {
     return null; // or a loading skeleton
@@ -105,7 +125,7 @@ export default function AccountPage() {
       <CardHeader>
         <CardTitle>Admin Profile</CardTitle>
         <CardDescription>
-          This information will be displayed publicly so be careful what you share.
+          Manage your profile information. Click "Save Changes" to persist your edits.
         </CardDescription>
       </CardHeader>
       <CardContent className="space-y-6">
@@ -113,9 +133,9 @@ export default function AccountPage() {
           <Label>Profile Picture</Label>
           <div className="flex items-center gap-4">
             <Avatar className="h-20 w-20">
-              <AvatarImage src={profile.avatarUrl} alt={profile.fullName} />
+              <AvatarImage src={draftProfile.avatarUrl} alt={draftProfile.fullName} />
               <AvatarFallback>
-                {profile.fullName
+                {draftProfile.fullName
                   .split(' ')
                   .map((n) => n[0])
                   .join('')}
@@ -128,19 +148,19 @@ export default function AccountPage() {
         <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
           <div className="space-y-2">
             <Label htmlFor="fullName">Full Name</Label>
-            <Input id="fullName" name="fullName" value={profile.fullName} onChange={handleChange} />
+            <Input id="fullName" name="fullName" value={draftProfile.fullName} onChange={handleChange} />
           </div>
           <div className="space-y-2">
             <Label htmlFor="username">Username</Label>
-            <Input id="username" name="username" value={profile.username} onChange={handleChange} />
+            <Input id="username" name="username" value={draftProfile.username} onChange={handleChange} />
           </div>
           <div className="space-y-2">
             <Label htmlFor="email">Email</Label>
-            <Input id="email" name="email" type="email" value={profile.email} onChange={handleChange} />
+            <Input id="email" name="email" type="email" value={draftProfile.email} onChange={handleChange} />
           </div>
           <div className="space-y-2">
             <Label htmlFor="phone">Phone Number</Label>
-            <Input id="phone" name="phone" type="tel" value={profile.phone} onChange={handleChange} />
+            <Input id="phone" name="phone" type="tel" value={draftProfile.phone} onChange={handleChange} />
           </div>
         </div>
 
@@ -151,14 +171,24 @@ export default function AccountPage() {
 
         <div className="space-y-2">
           <Label htmlFor="bio">About</Label>
-          <Textarea id="bio" name="bio" value={profile.bio} onChange={handleChange} rows={4} placeholder="Tell us a little bit about yourself" />
+          <Textarea id="bio" name="bio" value={draftProfile.bio} onChange={handleChange} rows={4} placeholder="Tell us a little bit about yourself" />
         </div>
 
-        <div className="flex justify-end pt-4">
-          <Button variant="destructive" onClick={handleResetProfile}>
-            <Trash2 className="mr-2 h-4 w-4" />
-            Reset Profile
-          </Button>
+        <div className="flex flex-col gap-4 sm:flex-row sm:justify-end pt-4">
+            <Button variant="destructive" onClick={handleResetProfile} className="order-last sm:order-first">
+                <Trash2 className="mr-2 h-4 w-4" />
+                Reset to Default
+            </Button>
+            <div className="flex gap-4">
+                <Button variant="outline" onClick={handleCancel} disabled={!hasUnsavedChanges}>
+                    <X className="mr-2 h-4 w-4" />
+                    Cancel
+                </Button>
+                <Button onClick={handleSaveChanges} disabled={!hasUnsavedChanges}>
+                    <Save className="mr-2 h-4 w-4" />
+                    Save Changes
+                </Button>
+            </div>
         </div>
       </CardContent>
     </Card>

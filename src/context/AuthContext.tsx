@@ -45,6 +45,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const logout = () => {
     setIsAuthenticated(false);
     localStorage.removeItem('isAuthenticated');
+    // Clear profile draft on logout
+    localStorage.removeItem('admin_profile_draft');
     router.push('/login');
   };
 
