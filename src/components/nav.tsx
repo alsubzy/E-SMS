@@ -95,6 +95,12 @@ export default function Nav() {
     setOpenMenu(openMenu === label ? null : label);
   };
 
+  const isMenuItemActive = (itemHref: string, hasSubmenu: boolean) => {
+    if (itemHref === '/pos') return pathname.startsWith('/pos');
+    if (hasSubmenu) return pathname.startsWith(itemHref);
+    return pathname === itemHref;
+  }
+
   return (
     <>
       <SidebarHeader className="p-4">
@@ -112,7 +118,7 @@ export default function Nav() {
             <SidebarMenuItem key={item.label}>
               <SidebarMenuButton
                 asChild
-                isActive={pathname.startsWith(item.href) && item.href !== '/'}
+                isActive={isMenuItemActive(item.href, !!item.submenu)}
                 className="justify-between group"
               >
                 <Link href={item.href} onClick={(e) => {
