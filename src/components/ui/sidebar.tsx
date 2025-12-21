@@ -330,9 +330,18 @@ const SidebarMenuButton = React.forwardRef<
   ) => {
     const Comp = asChild ? Slot : 'button';
     const { open, isMobile } = useSidebar();
-
-    const button = (
-       <Comp
+    
+    const button = asChild ? (
+      <Comp
+        ref={ref}
+        data-sidebar="menu-button"
+        className={cn(sidebarMenuButtonVariants({ isActive }), className)}
+        {...props}
+      >
+        {children}
+      </Comp>
+    ) : (
+      <Comp
         ref={ref}
         data-sidebar="menu-button"
         className={cn(sidebarMenuButtonVariants({ isActive }), className)}
@@ -342,7 +351,7 @@ const SidebarMenuButton = React.forwardRef<
         <span
           className={cn(
             'flex-1 truncate transition-opacity duration-200',
-            open || isMobile ? 'opacity-100' : 'opacity-0 w-0'
+            open || isMobile ? 'opacity-100' : 'w-0 opacity-0'
           )}
         >
           {props.title}
