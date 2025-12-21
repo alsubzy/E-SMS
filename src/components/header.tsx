@@ -1,7 +1,6 @@
-
 'use client';
 
-import { Bell, ChevronDown, Search, MessageCircle, User, Settings, Lock, BellRing, History, LogOut } from 'lucide-react';
+import { Bell, ChevronDown, Search } from 'lucide-react';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -36,7 +35,7 @@ export default function Header() {
   };
 
   return (
-    <header className="sticky top-0 z-10 flex h-16 items-center gap-4 border-b bg-background px-4 md:px-8">
+    <header className="sticky top-0 z-10 flex h-20 items-center gap-4 border-b bg-background px-4 md:px-8">
       <div className="flex items-center gap-4">
         <SidebarTrigger className="md:hidden" />
       </div>
@@ -47,15 +46,11 @@ export default function Header() {
             <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
             <Input
               type="search"
-              placeholder="What do you want to find?"
-              className="pl-8 sm:w-[300px] md:w-[200px] lg:w-[300px] bg-white"
+              placeholder="Search..."
+              className="pl-8 sm:w-[300px] md:w-[200px] lg:w-[300px] rounded-full bg-white"
             />
           </div>
         </form>
-        <Button variant="ghost" size="icon" className="rounded-full">
-          <MessageCircle className="h-5 w-5" />
-          <span className="sr-only">Toggle messages</span>
-        </Button>
         <Button variant="ghost" size="icon" className="rounded-full">
           <Bell className="h-5 w-5" />
           <span className="sr-only">Toggle notifications</span>
@@ -68,7 +63,7 @@ export default function Header() {
             >
               {userProfile && (
                 <>
-                  <Avatar className="h-8 w-8">
+                  <Avatar className="h-10 w-10">
                     <AvatarImage
                       src={userProfile.avatarUrl}
                       alt={userProfile.fullName}
@@ -89,26 +84,14 @@ export default function Header() {
             <DropdownMenuLabel>My Account</DropdownMenuLabel>
             <DropdownMenuSeparator />
             <DropdownMenuItem asChild>
-              <Link href="/account"><User className="mr-2 h-4 w-4" />View Profile</Link>
+              <Link href="/account">View Profile</Link>
             </DropdownMenuItem>
             <DropdownMenuItem asChild>
-              <Link href="/account"><Settings className="mr-2 h-4 w-4" />Edit Profile</Link>
+              <Link href="/account">Edit Profile</Link>
             </DropdownMenuItem>
-            <DropdownMenuItem>
-              <Lock className="mr-2 h-4 w-4" />
-              Change Password
-            </DropdownMenuItem>
-            <DropdownMenuItem>
-              <BellRing className="mr-2 h-4 w-4" />
-              Notification Preferences
-            </DropdownMenuItem>
-            <DropdownMenuItem>
-              <History className="mr-2 h-4 w-4" />
-              Activity History
-            </DropdownMenuItem>
+            <DropdownMenuItem>Change Password</DropdownMenuItem>
             <DropdownMenuSeparator />
             <DropdownMenuItem onClick={handleLogout}>
-              <LogOut className="mr-2 h-4 w-4" />
               Logout
             </DropdownMenuItem>
           </DropdownMenuContent>
@@ -117,5 +100,3 @@ export default function Header() {
     </header>
   );
 }
-
-    

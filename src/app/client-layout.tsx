@@ -12,13 +12,15 @@ export default function ClientLayout({
 }) {
   return (
     <SidebarProvider>
-      <Sidebar>
-        <Nav />
-      </Sidebar>
-      <main className="flex flex-1 flex-col bg-white">
-        <Header />
-        <div className="flex-1 overflow-y-auto p-4 md:p-8">{children}</div>
-      </main>
+      <div className="flex min-h-screen">
+        <Sidebar>
+          <Nav />
+        </Sidebar>
+        <main className="flex-1 flex flex-col bg-[#F4F6F6]">
+          <Header />
+          <div className="flex-1 overflow-y-auto p-4 md:p-8">{children}</div>
+        </main>
+      </div>
       <Toaster />
     </SidebarProvider>
   );
