@@ -35,7 +35,6 @@ export function LoginForm() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
-  const [rememberMe, setRememberMe] = useState(true);
   const { login } = useAuth();
   const router = useRouter();
   const { toast } = useToast();
@@ -50,8 +49,10 @@ export function LoginForm() {
             setPassword(lastRegisteredUser.password);
              toast({
                 title: 'Registration Successful',
-                description: 'Your credentials are saved. Please log in to continue.',
+                description: 'Your account is created. Please log in to continue.',
             });
+             // Clean up after pre-filling
+            localStorage.removeItem(LAST_REGISTERED_USER_KEY);
         }
       }
       else {
@@ -67,7 +68,7 @@ export function LoginForm() {
 
   const handleSubmit = (event: FormEvent) => {
     event.preventDefault();
-    const success = login(email, password, rememberMe);
+    const success = login(email, password);
     if (success) {
       router.push('/');
     } else {
@@ -151,16 +152,7 @@ export function LoginForm() {
           </button>
         </div>
 
-        <div className="flex items-center justify-between">
-          <div className="flex items-center space-x-2">
-            <Checkbox id="remember-me" checked={rememberMe} onCheckedChange={(checked) => setRememberMe(checked as boolean)} />
-            <Label
-              htmlFor="remember-me"
-              className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-            >
-              Remember me
-            </Label>
-          </div>
+        <div className="flex items-center justify-end">
           <div className="text-sm">
             <Link
               href="#"

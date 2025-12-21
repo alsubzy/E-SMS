@@ -57,7 +57,11 @@ export function SignupForm() {
     });
     
     if (result.success) {
-      router.push('/login');
+      toast({
+          title: 'Signup Successful!',
+          description: 'You are now logged in.',
+      });
+      router.push('/');
     } else {
       toast({
         variant: 'destructive',
