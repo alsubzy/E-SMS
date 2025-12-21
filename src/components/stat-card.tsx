@@ -5,26 +5,27 @@ type StatCardProps = {
   title: string;
   value: string;
   icon: ReactNode;
-  change?: string;
+  bgColor?: string;
+  iconColor?: string;
 };
 
 export default function StatCard({
   title,
   value,
   icon,
-  change,
+  bgColor,
+  iconColor
 }: StatCardProps) {
   return (
-    <Card>
-      <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-        <CardTitle className="text-sm font-medium">{title}</CardTitle>
-        {icon}
+    <Card className={`${bgColor} border-0`}>
+      <CardHeader className="pb-2">
+        <CardTitle className="text-sm font-medium text-gray-500">{title}</CardTitle>
       </CardHeader>
-      <CardContent>
+      <CardContent className="flex justify-between items-center">
         <div className="text-2xl font-bold">{value}</div>
-        {change && (
-          <p className="text-xs text-muted-foreground">{change}</p>
-        )}
+        <div className={`p-2 rounded-lg ${iconColor}`}>
+            {icon}
+        </div>
       </CardContent>
     </Card>
   );

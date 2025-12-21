@@ -3,31 +3,19 @@
     {
       "id": "student-1",
       "description": "A female student smiling",
-      "imageUrl": "https://images.unsplash.com/photo-1651407833107-8a3de0b179f6?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw2fHxzdHVkZW50JTIwcGVyc29ufGVufDB8fHx8MTc2NjMwODQ1OXww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageUrl": "https://i.pravatar.cc/150?u=a042581f4e29026024d",
       "imageHint": "student person"
     },
     {
       "id": "student-2",
-      "description": "A male student in a classroom",
-      "imageUrl": "https://images.unsplash.com/photo-1651407833107-8a3de0b179f6?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw2fHxzdHVkZW50JTIwcGVyc29ufGVufDB8fHx8MTc2NjMwODQ1OXww&ixlib=rb-4.1.0&q=80&w=1080",
+      "description": "A female student with glasses",
+      "imageUrl": "https://i.pravatar.cc/150?u=a042581f4e29026704d",
       "imageHint": "student person"
     },
     {
       "id": "student-3",
-      "description": "A female student with glasses",
-      "imageUrl": "https://images.unsplash.com/photo-1610458069217-ff0b26333731?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwyfHxzdHVkZW50JTIwcGVyc29ufGVufDB8fHx8MTc2NjMwODQ1OXww&ixlib=rb-4.1.0&q=80&w=1080",
-      "imageHint": "student person"
-    },
-    {
-      "id": "student-4",
       "description": "A male student writing in a notebook",
-      "imageUrl": "https://images.unsplash.com/photo-1610458069051-90942d9a4c69?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwzfHxzdHVkZW50JTIwcGVyc29ufGVufDB8fHx8MTc2NjMwODQ1OXww&ixlib=rb-4.1.0&q=80&w=1080",
-      "imageHint": "student person"
-    },
-    {
-      "id": "student-5",
-      "description": "A female student outdoors",
-      "imageUrl": "https://images.unsplash.com/photo-1651407765255-153ab5dc62ed?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxzdHVkZW50JTIwcGVyc29ufGVufDB8fHx8MTc2NjMwODQ1OXww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageUrl": "https://i.pravatar.cc/150?u=a04258114e29026702d",
       "imageHint": "student person"
     }
   ]

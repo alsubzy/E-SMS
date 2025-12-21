@@ -2,7 +2,7 @@ import {
   Bell,
   ChevronDown,
   Search,
-  School,
+  MessageCircle,
 } from 'lucide-react';
 import {
   DropdownMenu,
@@ -23,10 +23,6 @@ export default function Header() {
     <header className="sticky top-0 z-10 flex h-16 items-center gap-4 border-b bg-background px-4 md:px-8">
       <div className="flex items-center gap-4">
          <SidebarTrigger className="md:hidden" />
-         <Link href="/" className="hidden items-center gap-2 font-bold text-lg md:flex">
-          <School className="h-6 w-6 text-primary" />
-          <span className="font-headline">CampusConnect</span>
-        </Link>
       </div>
       
       <div className="flex w-full items-center gap-4 md:ml-auto md:gap-2 lg:gap-4">
@@ -35,11 +31,15 @@ export default function Header() {
             <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
             <Input
               type="search"
-              placeholder="Search..."
-              className="pl-8 sm:w-[300px] md:w-[200px] lg:w-[300px]"
+              placeholder="What do you want to find?"
+              className="pl-8 sm:w-[300px] md:w-[200px] lg:w-[300px] bg-white"
             />
           </div>
         </form>
+        <Button variant="ghost" size="icon" className="rounded-full">
+          <MessageCircle className="h-5 w-5" />
+          <span className="sr-only">Toggle messages</span>
+        </Button>
         <Button variant="ghost" size="icon" className="rounded-full">
           <Bell className="h-5 w-5" />
           <span className="sr-only">Toggle notifications</span>
@@ -52,15 +52,15 @@ export default function Header() {
             >
               <Avatar className="h-8 w-8">
                 <AvatarImage
-                  src="https://picsum.photos/seed/avatar/100/100"
+                  src="https://picsum.photos/seed/avatar2/100/100"
                   alt="Admin"
                   data-ai-hint="person face"
                 />
-                <AvatarFallback>AD</AvatarFallback>
+                <AvatarFallback>PL</AvatarFallback>
               </Avatar>
               <div className="hidden text-left md:flex flex-col">
-                <span className="text-sm font-medium">Admin User</span>
-                <span className="text-xs text-muted-foreground">Administrator</span>
+                <span className="text-sm font-medium">Priscilla Lily</span>
+                <span className="text-xs text-muted-foreground">Admin</span>
               </div>
               <ChevronDown className="hidden h-4 w-4 text-muted-foreground md:block" />
             </Button>

@@ -30,7 +30,7 @@ export default function RootLayout({
           <Sidebar>
             <Nav />
           </Sidebar>
-          <main className="flex flex-1 flex-col bg-background">
+          <main className="flex flex-1 flex-col bg-[#F7F8FC]">
             <Header />
             <div className="flex-1 overflow-y-auto p-4 md:p-8">
               {children}
