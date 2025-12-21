@@ -6,7 +6,7 @@ import Header from '@/components/header';
 import { Toaster } from '@/components/ui/toaster';
 
 export const metadata: Metadata = {
-  title: 'CampusConnect',
+  title: 'ia Academy',
   description: 'A Modern School Management System',
 };
 
@@ -21,7 +21,7 @@ export default function RootLayout({
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link
-          href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+          href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@500;600;700&display=swap"
           rel="stylesheet"
         />
       </head>
@@ -30,7 +30,7 @@ export default function RootLayout({
           <Sidebar>
             <Nav />
           </Sidebar>
-          <main className="flex flex-1 flex-col">
+          <main className="flex flex-1 flex-col bg-background">
             <Header />
             <div className="flex-1 overflow-y-auto p-4 md:p-8">
               {children}
