@@ -17,12 +17,22 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
-import type { Student } from '@/lib/types';
+
+
+import type { Student, User, Section, Class, ParentStudent, Parent } from '@prisma/client';
 import { MoreVertical } from 'lucide-react';
 
-type StudentsTableProps = {
-  students: Student[];
+type StudentWithRelations = Student & {
+  user: { name: string | null; email: string; imageUrl: string | null };
+  currentSection: (Section & { class: Class }) | null;
+  parents: (ParentStudent & { parent: Parent & { user: User } })[];
 };
+
+type StudentsTableProps = {
+  students: StudentWithRelations[];
+};
+
+
 
 export default function StudentsTable({ students }: StudentsTableProps) {
   return (
@@ -46,31 +56,34 @@ export default function StudentsTable({ students }: StudentsTableProps) {
                 <div className="flex items-center gap-3">
                   <Avatar className="h-10 w-10">
                     <AvatarImage
-                      src={student.avatarUrl}
-                      alt={student.name}
-                      data-ai-hint="student person"
+                      src={student.user.imageUrl || ''}
+                      alt={student.user.name || 'Student'}
                     />
                     <AvatarFallback>
-                      {student.name
+                      {(student.user.name || 'ST')
                         .split(' ')
                         .map((n) => n[0])
                         .join('')}
                     </AvatarFallback>
                   </Avatar>
                   <div className="grid">
-                    <div className="font-medium">{student.name}</div>
+                    <div className="font-medium">{student.user.name || 'Unknown'}</div>
                     <div className="text-sm text-muted-foreground">
-                      {student.email}
+                      {student.user.email}
                     </div>
                   </div>
                 </div>
               </TableCell>
               <TableCell>
-                Class {student.class}-{student.section}
+                {student.currentSection ?
+                  `${student.currentSection.class.name} - ${student.currentSection.name}` :
+                  'Unassigned'}
               </TableCell>
-              <TableCell className="hidden md:table-cell">{student.guardianName}</TableCell>
+              <TableCell className="hidden md:table-cell">
+                {student.parents?.[0]?.parent.user.name || 'N/A'}
+              </TableCell>
               <TableCell>
-                <Badge variant={student.status === 'Active' ? 'secondary' : 'outline'} className={student.status === 'Active' ? "bg-green-100 text-green-800 dark:bg-green-900/50 dark:text-green-300" : ""}>
+                <Badge variant={student.status === 'ACTIVE' ? 'secondary' : 'outline'}>
                   {student.status}
                 </Badge>
               </TableCell>

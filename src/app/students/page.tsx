@@ -1,10 +1,14 @@
+
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { students } from '@/lib/data';
+import { StudentService } from '@/lib/services/student';
 import { FilePlus2 } from 'lucide-react';
 import StudentsTable from './students-table';
 
-export default function StudentsPage() {
+export default async function StudentsPage() {
+  const result = await StudentService.getAll();
+  const students = result.data as any; // Cast to avoid complex type matching issues for now, or define strict type
+
   return (
     <Card>
       <CardHeader>
@@ -15,10 +19,14 @@ export default function StudentsPage() {
               View, add, and manage student profiles.
             </CardDescription>
           </div>
-          <Button>
-            <FilePlus2 className="mr-2 h-4 w-4" />
-            Add Student
+
+          <Button asChild>
+            <a href="/students/admission">
+              <FilePlus2 className="mr-2 h-4 w-4" />
+              Add Student
+            </a>
           </Button>
+
         </div>
       </CardHeader>
       <CardContent>
@@ -27,3 +35,4 @@ export default function StudentsPage() {
     </Card>
   );
 }
+
