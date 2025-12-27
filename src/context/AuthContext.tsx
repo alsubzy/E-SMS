@@ -1,183 +1,124 @@
-
 'use client';
 
-import React, {
-  createContext,
-  useContext,
-  useState,
-  ReactNode,
-  useEffect,
-  useCallback,
-} from 'react';
+import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 
-export type UserProfile = {
-  fullName: string;
-  username: string;
+interface User {
+  id: string;
   email: string;
-  phone: string;
-  bio: string;
-  avatarUrl: string;
-  password?: string; // Only for registration, not stored long-term
-};
+  name: string | null;
+  role: string;
+}
 
 interface AuthContextType {
+  user: User | null;
+  accessToken: string | null;
+  loading: boolean;
   isAuthenticated: boolean;
   isLoading: boolean;
-  userProfile: UserProfile | null;
-  login: (email: string, pass: string) => boolean;
-  logout: () => void;
-  signup: (newProfile: UserProfile) => { success: boolean; message: string };
-  updateProfile: (newProfile: UserProfile) => void;
+  login: (email: string, password: string) => Promise<void>;
+  logout: () => Promise<void>;
+  register: (email: string, password: string, name: string, role?: string) => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
-const defaultProfile: UserProfile = {
-  fullName: 'Priscilla Lily',
-  username: 'priscilla',
-  email: 'admin@example.com',
-  phone: '',
-  bio: '',
-  avatarUrl: 'https://picsum.photos/seed/avatar2/100/100',
-  password: 'password'
-};
-
-const ALL_USERS_KEY = 'all_users';
-const CURRENT_USER_EMAIL_KEY = 'current_user_email';
-const LAST_REGISTERED_USER_KEY = 'last_registered_user';
-
-export function AuthProvider({ children }: { children: ReactNode }) {
-  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
-  const [isLoading, setIsLoading] = useState(true);
-  const [userProfile, setUserProfile] = useState<UserProfile | null>(null);
+export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  const [user, setUser] = useState<User | null>(null);
+  const [accessToken, setAccessToken] = useState<string | null>(null);
+  const [loading, setLoading] = useState(true);
   const router = useRouter();
 
-  const loadUserByEmail = (email: string) => {
+  const refreshAccessToken = useCallback(async () => {
     try {
-      const allUsersRaw = localStorage.getItem(ALL_USERS_KEY);
-      const allUsers: UserProfile[] = allUsersRaw ? JSON.parse(allUsersRaw) : [];
-      return allUsers.find(user => user.email === email) || null;
+      const res = await fetch('/api/auth/refresh', { method: 'POST' });
+      if (res.ok) {
+        const data = await res.json();
+        setAccessToken(data.accessToken);
+        setUser(data.user);
+        return data.accessToken;
+      } else {
+        setUser(null);
+        setAccessToken(null);
+      }
     } catch (error) {
-      console.error("Failed to parse all_users from localStorage", error);
-      return null;
+      console.error('Failed to refresh token', error);
+      setUser(null);
+      setAccessToken(null);
+    }
+    return null;
+  }, []);
+
+  const login = async (email: string, password: string) => {
+    const res = await fetch('/api/auth/login', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email, password }),
+    });
+
+    if (res.ok) {
+      const data = await res.json();
+      setUser(data.user);
+      setAccessToken(data.accessToken);
+      router.push('/dashboard');
+    } else {
+      const error = await res.json();
+      throw new Error(error.error || 'Login failed');
+    }
+  };
+
+  const logout = async () => {
+    await fetch('/api/auth/logout', { method: 'POST' });
+    setUser(null);
+    setAccessToken(null);
+    router.push('/login');
+  };
+
+  const register = async (email: string, password: string, name: string, role?: string) => {
+    const res = await fetch('/api/auth/register', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email, password, name, role }),
+    });
+
+    if (!res.ok) {
+      const error = await res.json();
+      throw new Error(error.error || 'Registration failed');
     }
   };
 
   useEffect(() => {
-    try {
-      const allUsersRaw = localStorage.getItem(ALL_USERS_KEY);
-      if (!allUsersRaw) {
-        localStorage.setItem(ALL_USERS_KEY, JSON.stringify([defaultProfile]));
+    const initAuth = async () => {
+      const token = await refreshAccessToken();
+      if (token) {
+        // Fetch user info if needed, or decode from token
+        // For simplicity, we assume refresh returns user or we decode it
       }
-
-      const currentUserEmail = localStorage.getItem(CURRENT_USER_EMAIL_KEY);
-      if (currentUserEmail) {
-        const profile = loadUserByEmail(currentUserEmail);
-        if (profile) {
-          const { password, ...profileToStore } = profile;
-          setUserProfile(profileToStore);
-          setIsAuthenticated(true);
-        }
-      }
-    } catch (error) {
-      console.error("Failed to initialize auth state from localStorage", error);
-    } finally {
-      setIsLoading(false);
-    }
-  }, []);
-
-  const login = (email: string, pass: string) => {
-    const allUsersRaw = localStorage.getItem(ALL_USERS_KEY);
-    const allUsers: UserProfile[] = allUsersRaw ? JSON.parse(allUsersRaw) : [];
-    
-    const foundUser = allUsers.find(
-      (user) => user.email === email && user.password === pass
-    );
-
-    if (foundUser) {
-      const { password, ...profileToStore } = foundUser;
-      setUserProfile(profileToStore);
-      setIsAuthenticated(true);
-      localStorage.setItem(CURRENT_USER_EMAIL_KEY, profileToStore.email);
-      router.push('/');
-      return true;
-    }
-    return false;
-  };
-  
-  const signup = (newProfile: UserProfile) => {
-    try {
-      const allUsersRaw = localStorage.getItem(ALL_USERS_KEY);
-      const allUsers: UserProfile[] = allUsersRaw ? JSON.parse(allUsersRaw) : [defaultProfile];
-
-      const existingUser = allUsers.find(
-        (user) => user.email === newProfile.email || user.username === newProfile.username
-      );
-
-      if (existingUser) {
-        return { success: false, message: 'An account with this email or username already exists.' };
-      }
-
-      allUsers.push(newProfile);
-      localStorage.setItem(ALL_USERS_KEY, JSON.stringify(allUsers));
-      
-      // Store credentials for pre-filling login form, but don't log in
-      localStorage.setItem(LAST_REGISTERED_USER_KEY, JSON.stringify({ email: newProfile.email, password: newProfile.password }));
-
-      return { success: true, message: 'Signup successful! Please log in.' };
-    } catch (error) {
-      console.error("Failed during signup process", error);
-      return { success: false, message: 'An unexpected error occurred during signup.' };
-    }
-  };
-
-  const logout = () => {
-    setIsAuthenticated(false);
-    setUserProfile(null);
-    localStorage.removeItem(CURRENT_USER_EMAIL_KEY);
-    localStorage.removeItem('admin_profile_draft');
-    router.push('/login');
-  };
-
-  const updateProfile = useCallback((newProfileData: Omit<UserProfile, 'password'>) => {
-    try {
-      const allUsersRaw = localStorage.getItem(ALL_USERS_KEY);
-      let allUsers: UserProfile[] = allUsersRaw ? JSON.parse(allUsersRaw) : [];
-      const userIndex = allUsers.findIndex(u => u.email === newProfileData.email);
-
-      if (userIndex !== -1) {
-        const originalPassword = allUsers[userIndex].password;
-        const updatedUser = { ...allUsers[userIndex], ...newProfileData, password: originalPassword };
-        allUsers[userIndex] = updatedUser;
-        
-        localStorage.setItem(ALL_USERS_KEY, JSON.stringify(allUsers));
-
-        // Update the live profile state if the updated user is the current user
-        if (userProfile && userProfile.email === newProfileData.email) {
-            const { password, ...profileToStore } = updatedUser;
-            setUserProfile(profileToStore);
-            localStorage.setItem(CURRENT_USER_EMAIL_KEY, profileToStore.email);
-        }
-      }
-    } catch (error) {
-      console.error("Failed to update profile in localStorage", error);
-    }
-  }, [userProfile]);
+      setLoading(false);
+    };
+    initAuth();
+  }, [refreshAccessToken]);
 
   return (
-    <AuthContext.Provider value={{ isAuthenticated, isLoading, userProfile, login, logout, signup, updateProfile }}>
+    <AuthContext.Provider value={{
+      user,
+      accessToken,
+      loading,
+      isAuthenticated: !!accessToken,
+      isLoading: loading,
+      login,
+      logout,
+      register
+    }}>
       {children}
     </AuthContext.Provider>
   );
-}
+};
 
-export function useAuth() {
+export const useAuth = () => {
   const context = useContext(AuthContext);
   if (context === undefined) {
     throw new Error('useAuth must be used within an AuthProvider');
   }
   return context;
-}
-
-    
+};

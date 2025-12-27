@@ -3,9 +3,20 @@ import { prisma } from "@/lib/prisma";
 import { Role, AccountStatus, Prisma } from "@prisma/client";
 
 export const UserService = {
-    async getAll(page = 1, limit = 10, role?: Role) {
+
+    async getAll(page = 1, limit = 10, role?: Role, search?: string) {
         const skip = (page - 1) * limit;
-        const where: Prisma.UserWhereInput = role ? { role } : {};
+        const where: Prisma.UserWhereInput = {
+            AND: [
+                role ? { role } : {},
+                search ? {
+                    OR: [
+                        { name: { contains: search, mode: 'insensitive' } },
+                        { email: { contains: search, mode: 'insensitive' } }
+                    ]
+                } : {}
+            ]
+        };
 
         const [data, total] = await prisma.$transaction([
             prisma.user.findMany({
